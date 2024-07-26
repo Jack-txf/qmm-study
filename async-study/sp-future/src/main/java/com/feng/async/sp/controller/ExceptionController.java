@@ -32,7 +32,7 @@ public class ExceptionController {
         return new Result();
     }
 
-    // 自定义异常---兜底
+    // 自定义异常
     @GetMapping("/getc/{goodsId}")
     public Result getDetailsc(@PathVariable("goodsId") String goodsId) {
         Result result = new Result();
