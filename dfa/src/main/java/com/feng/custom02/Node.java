@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.HashMap;
 
 @Data
-class Node {
+public class Node {
     private boolean isEnd;
     private HashMap<Character, Node> next;
 
