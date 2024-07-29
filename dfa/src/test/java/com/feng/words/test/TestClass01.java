@@ -1,11 +1,10 @@
 package com.feng.words.test;
 
 import com.github.houbb.sensitive.word.core.SensitiveWordHelper;
-import org.junit.Test;
-
-import java.util.List;
+import org.junit.jupiter.api.Test;
 
 public class TestClass01 {
+
 
     @Test
     public void test01() {
