@@ -9,11 +9,11 @@
 .history/
 
 ##ignore this file##
-/target/
-/.idea/
-/.settings/
-/.vscode/
-/bin/
+target/
+.idea/
+.settings/
+.vscode/
+bin/
 
 .classpath
 .project
