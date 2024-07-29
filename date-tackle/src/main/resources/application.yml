@@ -6,9 +6,10 @@ spring:
     name: date-tackle
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    # 与数据库所处的时区要一致
     url: jdbc:mysql://localhost:3306/senstive_words?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
     username: root
     password: TXFtxf1121512752
 
-  mybatis-plus:
-    mapper-locations: classpath*:/mapper/**/*.xml
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml

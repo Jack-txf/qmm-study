@@ -30,8 +30,9 @@ public class DatePojo {
 
     private String msg;
 
+    // idea标记代码：让光标处在一行，按F11键；   Shift+F11键显示所有标签的代码
     @TableField(fill = FieldFill.INSERT)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai") // 与数据库所处的时区要一致 ！！
     private Date createTime;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
