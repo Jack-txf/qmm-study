@@ -12,6 +12,7 @@
         <module>async-study</module>
         <module>async-study/sp-future</module>
         <module>funcation-coding</module>
+        <module>dfa</module>
     </modules>
 
     <properties>
