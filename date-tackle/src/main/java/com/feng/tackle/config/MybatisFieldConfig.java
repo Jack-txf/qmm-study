@@ -18,6 +18,7 @@ public class MybatisFieldConfig implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         //设置属性值
+        // DESC mybatis-plus的字段自动注入的方式
         this.setFieldValByName("modifyTime",new Date(),metaObject);
     }
 }
