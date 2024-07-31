@@ -1,0 +1,12 @@
+server:
+  port: 9005
+
+spring:
+  application:
+    name: txf-chat
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/senstive_words?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: TXFtxf1121512752

@@ -1,0 +1,24 @@
+package com.feng.chat.mapper;
+
+import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import com.feng.chat.entity.ChatUser;
+
+/**
+ * (ChatUser)表数据库访问层
+ *
+ * @author makejava
+ * @since 2024-07-31 20:35:31
+ */
+public interface ChatUserMapper extends BaseMapper<ChatUser> {
+    /**
+    * 批量新增数据（MyBatis原生foreach方法）
+    *
+    * @param entities List<ChatUser> 实例对象列表
+    * @return 影响行数
+    */
+    int insertBatch(@Param("entities") List<ChatUser> entities);
+}
+

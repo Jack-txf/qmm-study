@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.feng.chat.mapper.ChatUserMapper">
+
+    <resultMap type="com.feng.chat.entity.ChatUser" id="ChatUserMap">
+        <result property="uid" column="uid" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="nick" column="nick" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="uid" useGeneratedKeys="true">
+        insert into senstive_words.chat_user(usernamepasswordnick)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.username}#{entity.password}#{entity.nick})
+        </foreach>
+    </insert>
+
+</mapper>
+

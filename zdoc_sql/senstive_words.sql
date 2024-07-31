@@ -11,11 +11,43 @@
  Target Server Version : 80035
  File Encoding         : 65001
 
- Date: 29/07/2024 20:40:20
+ Date: 31/07/2024 20:40:55
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for chat_msg
+-- ----------------------------
+DROP TABLE IF EXISTS `chat_msg`;
+CREATE TABLE `chat_msg`  (
+  `msg_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `from_user` int NULL DEFAULT NULL,
+  `to_user` int NULL DEFAULT NULL,
+  `msg_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`msg_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of chat_msg
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for chat_user
+-- ----------------------------
+DROP TABLE IF EXISTS `chat_user`;
+CREATE TABLE `chat_user`  (
+  `uid` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `nick` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`uid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of chat_user
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for date_tab

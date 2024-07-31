@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.feng.chat.mapper.ChatMsgMapper">
+
+    <resultMap type="com.feng.chat.entity.ChatMsg" id="ChatMsgMap">
+        <result property="msgId" column="msg_id" jdbcType="VARCHAR"/>
+        <result property="fromUser" column="from_user" jdbcType="INTEGER"/>
+        <result property="toUser" column="to_user" jdbcType="INTEGER"/>
+        <result property="msgDesc" column="msg_desc" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="msgId" useGeneratedKeys="true">
+        insert into senstive_words.chat_msg(from_userto_usermsg_desc)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.fromUser}#{entity.toUser}#{entity.msgDesc})
+        </foreach>
+    </insert>
+
+</mapper>
+
