@@ -29,7 +29,7 @@ public class ChatUserController extends ApiController {
         if (Objects.isNull(chatUser.getUsername()) || Objects.isNull(chatUser.getPassword())) {
             throw new MyException(444, "用户参数异常！不能为空!");
         }
-        Optional<ChatUser> chatUser1 = Optional.ofNullable(chatUser).;
+        Optional<ChatUser> chatUser1 = Optional.ofNullable(chatUser);
 
         return R.success();
     }
