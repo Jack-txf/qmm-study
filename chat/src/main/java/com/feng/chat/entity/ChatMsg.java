@@ -1,7 +1,14 @@
 package com.feng.chat.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -10,9 +17,13 @@ import java.io.Serializable;
  * @author makejava
  * @since 2024-07-31 20:35:29
  */
-@SuppressWarnings("serial")
-public class ChatMsg extends Model<ChatMsg> {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@TableName("chat_msg")
+public class ChatMsg {
 
+    @TableId(type = IdType.AUTO)
     private String msgId;
 
     private Integer fromUser;
@@ -54,14 +65,5 @@ public class ChatMsg extends Model<ChatMsg> {
         this.msgDesc = msgDesc;
     }
 
-    /**
-     * 获取主键值
-     *
-     * @return 主键值
-     */
-    @Override
-    protected Serializable pkVal() {
-        return this.msgId;
-    }
 }
 

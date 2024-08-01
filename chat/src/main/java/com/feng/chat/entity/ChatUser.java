@@ -1,7 +1,14 @@
 package com.feng.chat.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -10,9 +17,13 @@ import java.io.Serializable;
  * @author makejava
  * @since 2024-07-31 20:35:31
  */
-@SuppressWarnings("serial")
-public class ChatUser extends Model<ChatUser> {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@TableName("chat_msg")
+public class ChatUser{
 
+    @TableId(type = IdType.AUTO)
     private Integer uid;
 
     private String username;
@@ -21,47 +32,5 @@ public class ChatUser extends Model<ChatUser> {
 
     private String nick;
 
-
-    public Integer getUid() {
-        return uid;
-    }
-
-    public void setUid(Integer uid) {
-        this.uid = uid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getNick() {
-        return nick;
-    }
-
-    public void setNick(String nick) {
-        this.nick = nick;
-    }
-
-    /**
-     * 获取主键值
-     *
-     * @return 主键值
-     */
-    @Override
-    protected Serializable pkVal() {
-        return this.uid;
-    }
 }
 
