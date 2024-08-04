@@ -10,3 +10,7 @@ spring:
     url: jdbc:mysql://localhost:3306/senstive_words?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
     username: root
     password: TXFtxf1121512752
+
+white:
+  urls:
+    - "/chatUser/login"

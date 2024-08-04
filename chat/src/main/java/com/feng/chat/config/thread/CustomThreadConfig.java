@@ -1,4 +1,4 @@
-package com.feng.chat.config;
+package com.feng.chat.config.thread;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

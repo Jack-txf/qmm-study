@@ -34,6 +34,11 @@ public class ChatUserController extends ApiController {
         return R.success();
     }
 
+    @GetMapping("/test")
+    public R test() {
+        System.out.println("hahah");
+        return R.success();
+    }
 
 }
 
