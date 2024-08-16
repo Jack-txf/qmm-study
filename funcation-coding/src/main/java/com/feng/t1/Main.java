@@ -42,15 +42,18 @@ public class Main {
         //
         // collect.forEach(System.out::println);
 
-        ArrayList<Integer> integers = new ArrayList<>();
-        integers.add(1);
+        // ArrayList<Integer> integers = new ArrayList<>();
+        // integers.add(1);
+        //
+        // ArrayList<Integer> integers1 = new ArrayList<>();
+        // integers1.add(2); integers1.add(3);
+        //
+        // integers.addAll(integers1);
+        // integers.forEach(System.out::println);
 
-        ArrayList<Integer> integers1 = new ArrayList<>();
-        integers1.add(2); integers1.add(3);
-
-        integers.addAll(integers1);
-        integers.forEach(System.out::println);
-
+        List<Integer> integers = Arrays.asList(1, 2, 2, 3, 9, 10, -1, 1, 2);
+        integers = integers.stream().distinct().collect(Collectors.toList());
+        System.out.println(integers);
     }
     private static List<Student> getList() {
         return null;

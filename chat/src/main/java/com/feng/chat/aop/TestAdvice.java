@@ -6,3 +6,4 @@ package com.feng.chat.aop;
  */
 public class TestAdvice {
 }
+
