@@ -1,5 +1,6 @@
 package com.feng.chat.websocket;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -9,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @ServerEndpoint("/txfChat")
+@Slf4j
 public class WebSocketChatServer {
     /**
      * 全部在线会话  PS: 基于场景考虑 这里使用线程安全的Map存储会话对象。

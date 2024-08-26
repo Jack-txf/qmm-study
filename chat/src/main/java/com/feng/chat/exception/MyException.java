@@ -23,6 +23,10 @@ public class MyException extends RuntimeException {
         this.errorMsg = errorMsg;
     }
 
+    public MyException(String s) {
+        super(s);
+    }
+
     public String getErrorMsg() {
         return this.errorMsg;
     }
