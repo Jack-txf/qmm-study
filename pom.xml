@@ -15,6 +15,7 @@
         <module>dfa</module>
         <module>date-tackle</module>
         <module>chat</module>
+        <module>netty</module>
     </modules>
 
     <properties>
