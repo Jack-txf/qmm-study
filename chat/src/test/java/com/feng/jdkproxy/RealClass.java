@@ -8,6 +8,8 @@ public class RealClass implements ProxyInterface{
     @Override
     public String SayHello(String name) {
         System.out.println("hi");
+
+        SayGoodBye();
         return "Hello";
     }
 
