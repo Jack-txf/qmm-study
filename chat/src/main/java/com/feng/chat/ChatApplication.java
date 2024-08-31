@@ -8,6 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan("com.feng.chat.mapper")
 public class ChatApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ChatApplication.class);
+        SpringApplication.run(ChatApplication.class, args);
     }
 }

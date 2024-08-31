@@ -16,6 +16,7 @@
         <module>date-tackle</module>
         <module>chat</module>
         <module>netty</module>
+        <module>test-demo</module>
     </modules>
 
     <properties>
