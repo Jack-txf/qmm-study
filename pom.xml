@@ -17,6 +17,8 @@
         <module>chat</module>
         <module>netty</module>
         <module>test-demo</module>
+        <module>log-tool</module>
+        <module>yt-tool</module>
     </modules>
 
     <properties>

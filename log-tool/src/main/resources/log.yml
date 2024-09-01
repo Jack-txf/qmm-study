@@ -1,0 +1,5 @@
+log:
+  location: "D:\a_ytw\logs\20240831\back"
+  name: "info.log"
+  # 日志类型 info debug warn
+  type: "info"
