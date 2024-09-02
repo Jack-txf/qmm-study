@@ -1,0 +1,5 @@
+txflog:
+  location: D:\a_ytwproject\日志排查\20240715
+  name: warn-2024-07-15-1.log
+  # 日志类型 info debug warn
+  type: warn

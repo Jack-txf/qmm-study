@@ -1,19 +1,14 @@
 package com.feng.log.config;
 
-import com.feng.log.myenum.LogType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * @author Williams_Tian
- * @CreateDate 2024/9/2
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class YmlConfig {
+public class YmlConfig1 {
     private String location;
     private String name;
-    private LogType logType;
+    private String type;
 }
