@@ -11,6 +11,7 @@ import lombok.Data;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -53,5 +54,20 @@ public class LogParse {
 
     public R solve() {
         return LogStrategyFactory.solve(ymlConfig);
+    }
+
+    public void analyRes(R res) {
+        // 打印结果
+        List<String> ana = (List<String>) res.getData().get("ana");
+        List<Long> big = (List<Long>) res.getData().get("big");
+
+        System.out.println("执行记录条数：" + ana.size());
+        //ana.forEach(System.out::println);
+        System.out.println("=====耗时的记录=====");
+        big.forEach(item -> {
+            if ( item > 1500 ) {
+                System.err.println("execute time: " + item + " ms");
+            }
+        });
     }
 }

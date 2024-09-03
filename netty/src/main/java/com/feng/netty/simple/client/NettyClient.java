@@ -1,6 +1,6 @@
-package com.feng.netty.client;
+package com.feng.netty.simple.client;
 
-import com.feng.netty.client.handler.DemoSocketClientHandler;
+import com.feng.netty.simple.client.handler.DemoSocketClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

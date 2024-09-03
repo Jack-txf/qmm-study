@@ -1,5 +1,5 @@
 txflog:
-  location: D:\a_ytwproject\日志排查\20240715
-  name: info-2024-07-15-1.log
+  location: E:\a_yt_project\log\20240903
+  name: info-2024-08-31-1.log
   # 日志类型 info debug warn
   type: info

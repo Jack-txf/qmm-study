@@ -12,11 +12,7 @@ public class App {
         LogParse logParse = new LogParse();
         // 解析日志
         R res = logParse.solve();
-        // 打印结果
-        List<String> ana = (List<String>) res.getData().get("ana");
-        List<Long> big = (List<Long>) res.getData().get("big");
-
-        ana.forEach(System.out::println);
-        big.forEach(System.out::println);
+        // 解析结果
+        logParse.analyRes(res);
     }
 }

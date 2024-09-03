@@ -1,4 +1,4 @@
-package com.feng.netty.server.handler;
+package com.feng.netty.simple.server.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
