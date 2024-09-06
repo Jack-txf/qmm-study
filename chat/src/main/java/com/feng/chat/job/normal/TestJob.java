@@ -34,20 +34,20 @@ public class TestJob {
 
 
     // 下面使用了线程池！！，就不用争抢了
-    @Async(value = "customThreadExecutor")
-    @Scheduled(cron = "1-59 * * * * ?")
-    public void hello() {
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        log.info("hello");
-    }
-
-    @Async(value = "customThreadExecutor")
-    @Scheduled(cron = "1-59 * * * * ?")
-    public void world() {
-        log.info("world");
-    }
+    // @Async(value = "customThreadExecutor")
+    // @Scheduled(cron = "1-59 * * * * ?")
+    // public void hello() {
+    //     try {
+    //         TimeUnit.SECONDS.sleep(5);
+    //     } catch (InterruptedException e) {
+    //         throw new RuntimeException(e);
+    //     }
+    //     log.info("hello");
+    // }
+    //
+    // @Async(value = "customThreadExecutor")
+    // @Scheduled(cron = "1-59 * * * * ?")
+    // public void world() {
+    //     log.info("world");
+    // }
 }

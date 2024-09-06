@@ -57,6 +57,15 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- 多数据源切换 -->
+        <!-- https://mvnrepository.com/artifact/com.baomidou/dynamic-datasource-spring-boot-starter -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>
