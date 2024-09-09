@@ -1,6 +1,5 @@
 package com.feng.netty.day2.chatdemo.protocol;
 
-
 import com.feng.netty.day2.chatdemo.config.Config;
 import com.feng.netty.day2.chatdemo.message.Message;
 import io.netty.buffer.ByteBuf;
@@ -15,11 +14,8 @@ import java.util.List;
 /**
  * 必须和 LengthFieldBasedFrameDecoder 一起使用，确保接到的 ByteBuf 消息是完整的
  */
-// <入， 出>
-public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message> {
-
-    // 编码
-    @Override
+public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message> { // <入， 出>
+    @Override // 编码
     public void encode(ChannelHandlerContext ctx, Message msg, List<Object> outList) throws Exception {
         ByteBuf out = ctx.alloc().buffer();
         // 1. 4 字节的魔数
@@ -43,8 +39,7 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         outList.add(out);
     }
 
-    // 解码
-    @Override
+    @Override    // 解码
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         int magicNum = in.readInt();
         byte version = in.readByte();
