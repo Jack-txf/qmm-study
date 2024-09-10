@@ -28,13 +28,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ChatClient {
     public static void main(String[] args) {
         NioEventLoopGroup group = new NioEventLoopGroup();
-
         LoggingHandler LOGGING_HANDLER = new LoggingHandler(LogLevel.DEBUG);
         MessageCodecSharable MESSAGE_CODEC = new MessageCodecSharable();
         CountDownLatch WAIT_FOR_LOGIN = new CountDownLatch(1);
         AtomicBoolean LOGIN = new AtomicBoolean(false);
         AtomicBoolean EXIT = new AtomicBoolean(false);
-
+        Scanner scanner = new Scanner(System.in);
         try {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.channel(NioSocketChannel.class);
@@ -42,14 +41,13 @@ public class ChatClient {
             bootstrap.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(new StringEncoder());
+                    ch.pipeline().addLast(LOGGING_HANDLER);
                     ch.pipeline().addLast(new ProcotolFrameDecoder());
-                    // ch.pipeline().addLast(LOGGING_HANDLER);
                     ch.pipeline().addLast(MESSAGE_CODEC);
-                    // 客户端心跳机制
                     // 用来判断是不是 读空闲时间过长，或 写空闲时间过长
                     // 3s 内如果没有向服务器写数据，会触发一个 IdleState#WRITER_IDLE 事件
-                    // ch.pipeline().addLast(new IdleStateHandler(0, 3, 0));
+                    // ch.pipeline().addLast(new IdleStateHandler(0, 10, 0));
+                    // // ChannelDuplexHandler 可以同时作为入站和出站处理器
                     // ch.pipeline().addLast(new ChannelDuplexHandler() {
                     //     // 用来触发特殊事件
                     //     @Override
@@ -57,12 +55,11 @@ public class ChatClient {
                     //         IdleStateEvent event = (IdleStateEvent) evt;
                     //         // 触发了写空闲事件
                     //         if (event.state() == IdleState.WRITER_IDLE) {
-                    //             // log.debug("3s 没有写数据了，发送一个心跳包");
+                    //         // log.debug("3s 没有写数据了，发送一个心跳包");
                     //             ctx.writeAndFlush(new PingMessage());
                     //         }
                     //     }
                     // });
-
                     ch.pipeline().addLast("client handler", new ChannelInboundHandlerAdapter() {
                         // 接收响应消息
                         @Override
@@ -84,12 +81,11 @@ public class ChatClient {
                         public void channelActive(ChannelHandlerContext ctx) throws Exception {
                             // 负责接收用户在控制台的输入，负责向服务器发送各种消息
                             new Thread(() -> {
-                                Scanner scanner = new Scanner(System.in);
                                 System.out.println("请输入用户名:");
+                                String username = scanner.nextLine();
                                 if(EXIT.get()){
                                     return;
                                 }
-                                String username = scanner.nextLine();
                                 System.out.println("请输入密码:");
                                 String password = scanner.nextLine();
                                 if(EXIT.get()){
@@ -97,7 +93,7 @@ public class ChatClient {
                                 }
                                 // 构造消息对象
                                 LoginRequestMessage message = new LoginRequestMessage(username, password);
-                                System.out.println("将要发送的消息：" + message);
+                                System.out.println(message);
                                 // 发送消息
                                 ctx.writeAndFlush(message);
                                 System.out.println("等待后续操作...");
@@ -121,7 +117,15 @@ public class ChatClient {
                                     System.out.println("gquit [group name]");
                                     System.out.println("quit");
                                     System.out.println("==================================");
-                                    String command = scanner.nextLine();
+                                    String command = null;
+                                    try {
+                                        command = scanner.nextLine();
+                                    } catch (Exception e) {
+                                        break;
+                                    }
+                                    if(EXIT.get()){
+                                        return;
+                                    }
                                     String[] s = command.split(" ");
                                     switch (s[0]){
                                         case "send":

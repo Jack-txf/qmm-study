@@ -35,38 +35,22 @@ public class ChatServer {
             serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(new ProcotolFrameDecoder());
                     ch.pipeline().addLast(LOGGING_HANDLER);
+                    ch.pipeline().addLast(new ProcotolFrameDecoder());
                     ch.pipeline().addLast(MESSAGE_CODEC); // 消息编解码
-                    // 服务端---idle
-                    // 用来判断是不是 读空闲时间过长，或 写空闲时间过长
-                    // 60s 内如果没有收到 channel 的数据，会触发一个 IdleState#READER_IDLE 事件
-                    // ch.pipeline().addLast(new IdleStateHandler(60, 0, 0));
-                    // ch.pipeline().addLast(new ChannelDuplexHandler() { // ChannelDuplexHandler 可以同时作为入站和出站处理器
-                    //     @Override
-                    //     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception{// 用来触发特殊事件
-                    //         IdleStateEvent event = (IdleStateEvent) evt;
-                    //         if (event.state() == IdleState.READER_IDLE) { // 触发了读空闲事件
-                    //             log.debug("已经 5s 没有读到数据了");
-                    //             ctx.channel().close();
-                    //         }
-                    //     }
-                    // });
-                    // ping
-                    ch.pipeline().addLast(new PingMessageHandler());
-                    // 处理登录消息
-                    ch.pipeline().addLast(new LoginRequestMessageHandler());
-                    // 处理单聊消息
-                    ch.pipeline().addLast(new SingleChatMessageHandler());
-                    // ========= 群聊
-                    ch.pipeline().addLast(new GroupCreateMessageHandler()); // 创建群聊消息
-                    ch.pipeline().addLast(new GroupJoinMessageHandler());// 加入群聊
-                    ch.pipeline().addLast(new GetGroupMembersMessageHandler()); // 查看群成员
-                    ch.pipeline().addLast(new QuitGroupMessageHandler()); // 退出群聊
-                    ch.pipeline().addLast(new GroupChatMessageHandler()); // 发送群聊消息
+
+                    // ch.pipeline().addLast(new PingMessageHandler());// ping
+                    ch.pipeline().addLast(new LoginRequestMessageHandler());// 处理登录消息
+                    // ch.pipeline().addLast(new SingleChatMessageHandler());// 处理单聊消息
+                    // // ========= 群聊
+                    // ch.pipeline().addLast(new GroupCreateMessageHandler()); // 创建群聊消息
+                    // ch.pipeline().addLast(new GroupJoinMessageHandler());// 加入群聊
+                    // ch.pipeline().addLast(new GetGroupMembersMessageHandler()); // 查看群成员
+                    // ch.pipeline().addLast(new QuitGroupMessageHandler()); // 退出群聊
+                    // ch.pipeline().addLast(new GroupChatMessageHandler()); // 发送群聊消息
                     // ========
                     // 退出聊天室系统
-                    ch.pipeline().addLast(new QuitHandler()); // 退出，断开连接
+                    // ch.pipeline().addLast(new QuitHandler()); // 退出，断开连接
 
                 }
             });

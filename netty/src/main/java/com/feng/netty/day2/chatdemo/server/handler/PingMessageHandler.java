@@ -6,7 +6,6 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-@ChannelHandler.Sharable
 public class PingMessageHandler extends SimpleChannelInboundHandler<PingMessage> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PingMessage msg) throws Exception {
