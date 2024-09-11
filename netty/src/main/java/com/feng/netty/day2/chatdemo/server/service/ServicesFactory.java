@@ -22,7 +22,11 @@ public class ServicesFactory {
             for (String name : names) {
                 if (name.endsWith("Service")) {
                     Class<?> interfaceClass = Class.forName(name);
+                    System.out.println(interfaceClass); // interface
+
                     Class<?> instanceClass = Class.forName(properties.getProperty(name));
+                    System.out.println(instanceClass); // 实际类型
+
                     map.put(interfaceClass, instanceClass.newInstance());
                 }
             }
