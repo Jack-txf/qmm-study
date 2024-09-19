@@ -53,7 +53,7 @@ public class WxExcelUtils { // 微信商家导出的表，解析工具
                 Date tradeTime = dayData.getTradeTime();
                 calendar.setTime(tradeTime);
                 int y = calendar.get(Calendar.YEAR);
-                int m = calendar.get(Calendar.MONTH);
+                int m = calendar.get(Calendar.MONTH) + 1;
                 int d = calendar.get(Calendar.DAY_OF_MONTH);
                 boolean newCreate_pay = false;
                 boolean newCreate_refund = false;

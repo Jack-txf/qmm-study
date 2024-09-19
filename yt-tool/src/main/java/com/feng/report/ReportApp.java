@@ -13,7 +13,7 @@ csv文件记得将其编码转为utf-8！！！！！！！！！！！！！！
 public class ReportApp {
     public static void main(String[] args) {
         // 指定文件的位置（相对于此电脑）
-        String excelPath = "D:\\A_yuetao\\2024-9月份对账-0825-0917-大致齐的\\0918对账-0914-0917\\wxShop-0914-0917.xlsx";
+        String excelPath = "E:\\a_财务报表文档\\2024-9月份对账-0825-0917-大致齐的\\0918对账-0914-0917\\wxShop-0914-0917.xlsx";
         Map<String, Object> res = WxExcelUtils.analyseData(excelPath);
     }
 }
