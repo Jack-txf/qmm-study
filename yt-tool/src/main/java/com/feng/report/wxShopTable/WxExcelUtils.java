@@ -17,8 +17,8 @@ import java.util.*;
 wexin-0825-0913.xlsx
  */
 public class WxExcelUtils { // 微信商家导出的表，解析工具
-     private static final String PATTERN_YYYY_MM_DD = "yyyy/MM/dd HH:mm:ss";
-     private static final SimpleDateFormat sdf = new SimpleDateFormat(PATTERN_YYYY_MM_DD);
+     // private static final String PATTERN_YYYY_MM_DD = "yyyy/MM/dd HH:mm:ss";
+     // private static final SimpleDateFormat sdf = new SimpleDateFormat(PATTERN_YYYY_MM_DD);
 
     private static List<WxRealObject> readWxCsv( String excelPath ) {
         File file = new File(excelPath);
@@ -40,8 +40,8 @@ public class WxExcelUtils { // 微信商家导出的表，解析工具
         BigDecimal pay = BigDecimal.valueOf(0);
         BigDecimal refund = BigDecimal.valueOf(0);
         // key-月份   value-统计对象
-        Map<Integer, DaySituation> mon_day_sit_pay = new TreeMap<>();
-        Map<Integer, DaySituation> mon_day_sit_refund = new TreeMap<>();
+        TreeMap<Integer, DaySituation> mon_day_sit_pay = new TreeMap<>();
+        TreeMap<Integer, DaySituation> mon_day_sit_refund = new TreeMap<>();
         // 遍历读取的数据，进行统计-------------
         for (WxRealObject dayData : dataList) {
             String goodsName = dayData.getGoodsName();
@@ -97,16 +97,24 @@ public class WxExcelUtils { // 微信商家导出的表，解析工具
         return map;
     }
 
-    private static void showResult(BigDecimal pay, BigDecimal refund, Map<Integer,DaySituation> mon_day_sit_pay, Map<Integer, DaySituation> mon_day_sit_refund) {
-        System.out.println("【支付】:" + pay);
-        System.out.println("【退款】:" + refund);
+    private static void showResult(BigDecimal pay, BigDecimal refund, TreeMap<Integer,DaySituation> mon_day_sit_pay, TreeMap<Integer, DaySituation> mon_day_sit_refund) {
+        // 算出起止时间
+        DaySituation start = mon_day_sit_pay.get(mon_day_sit_pay.firstKey());
+        DaySituation end = mon_day_sit_pay.get(mon_day_sit_pay.lastKey());
+        int stm = start.getMonth();
+        int endm = end.getMonth();
+        int sd = 0, ed = 0;
+        for (int i = 1; i < start.getTotal().length; ++i)
+            if ( !start.getTotal()[i].equals(BigDecimal.ZERO) ) { sd = i; break;}
+        for (int i = end.getTotal().length - 1; i >= 1; --i)
+            if ( !end.getTotal()[i].equals(BigDecimal.ZERO) ) { ed = i; break;}
+        String desc = stm + "月" + sd + "日 -- " + endm + "月" + ed + "日 ";
+
+        System.out.println(desc + "【支付 总计】: " + pay);
+        System.out.println(desc + "【退款 总计】: " + refund);
         System.out.println("================================支付情况");
-        mon_day_sit_pay.forEach( (key, value) -> {
-            System.out.println(value);
-        });
+        mon_day_sit_pay.forEach( (key, value) -> System.out.println(value));
         System.out.println("================================退款情况");
-        mon_day_sit_refund.forEach( (key, value) -> {
-            System.out.println(value);
-        });
+        mon_day_sit_refund.forEach( (key, value) -> System.out.println(value));
     }
 }

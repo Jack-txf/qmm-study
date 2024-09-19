@@ -13,6 +13,7 @@ public class DaySituation {
     }
 
     private String Status;
+    @Getter
     private Integer month;
     @Getter
     private BigDecimal[] total;
