@@ -10,11 +10,14 @@ import java.util.Map;
  */
 public class ReportApp {
     public static void main(String[] args) {
-        // 指定文件的位置（相对于此电脑）
-        // String excelPath = "D:\\A_yuetao\\report\\wxShop-0914-0917 - 副本.xlsx";
-        // Map<String, Object> res = WxExcelUtils.analyseData(excelPath);
+        // 指定文件的位置（相对于此电脑）---------- 微信商家
+         String excelPath1 = "E:\\a_财务报表文档\\2024-9月份对账-0825-0919-大致齐的\\20240920对账-0918-0919\\wxShop-0918-0919.xlsx";
+         Map<String, Object> res = WxExcelUtils.analyseData(excelPath1);
 
-        String excelPath = "D:\\A_yuetao\\2024-9月份对账-0825-0917-大致齐的\\0918对账-0914-0917\\ytw&dp-wx-0914-0917.xlsx";
-        Object res = YtwExcelUtils.analyseYtwExcel(excelPath);
+        System.out.println("\n##################################################################\n");
+
+         // 指定文件的位置（相对于此电脑）---------- ytw微信支付
+        String excelPath = "E:\\a_财务报表文档\\2024-9月份对账-0825-0919-大致齐的\\20240920对账-0918-0919\\ytw&dp-wx-0918-0919.xlsx";
+        Object res2 = YtwExcelUtils.analyseYtwExcel(excelPath);
     }
 }
