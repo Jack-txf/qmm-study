@@ -1,4 +1,4 @@
 package test.demo.test.ins;
 
-public class AA implements A{
+public class AA extends Main implements A{
 }

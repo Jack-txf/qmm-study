@@ -11,5 +11,19 @@ public class Main {
 
         B b = new B();
         System.out.println(b instanceof AA);
+
+        fun1(aa);
+
+        fun(aa);
+    }
+
+    public static <T extends Main> T fun(T t) {
+        System.out.println("balabala");
+        return t;
+    }
+
+    public static <T> T fun1(T t) {
+        System.out.println("balabala");
+        return t;
     }
 }
