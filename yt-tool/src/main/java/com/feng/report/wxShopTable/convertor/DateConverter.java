@@ -16,7 +16,7 @@ import java.util.Date;
  * @create 2023/5/23 10:15
  */
 public class DateConverter implements Converter<Date> {
-    private static  final String PATTERN_YYYY_MM_DD = "yyyy-MM-dd HH:mm:ss";
+    private static  final String PATTERN_YYYY_MM_DD = "yyyy/MM/dd HH:mm:ss";
 
     @Override
     public Class<Date> supportJavaTypeKey() {
@@ -34,7 +34,7 @@ public class DateConverter implements Converter<Date> {
     @Override
     public Date convertToJavaData(ReadCellData<?> cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
         String value = cellData.getStringValue();
-        // System.out.println(value);
+        System.out.println(value);
         SimpleDateFormat sdf = new SimpleDateFormat(PATTERN_YYYY_MM_DD);
         return sdf.parse(value);
     }

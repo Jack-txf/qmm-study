@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 public class WxRealObject {
 
-    @DateTimeFormat(value = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(value = "yyyy/MM/dd HH:mm:ss")
     @ExcelProperty(value = "交易时间", converter = DateConverter.class)
     private Date tradeTime; // 交易时间=============
 

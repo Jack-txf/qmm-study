@@ -10,14 +10,33 @@ import java.util.Map;
  */
 public class ReportApp {
     public static void main(String[] args) {
+        //wxShop();
+
+        ytwWx();
+    }
+
+    private static void zfbShop() {
+        System.out.println("--------------------------------------------------------------------------------------");
+        // 指定文件的位置（相对于此电脑）---------- 支付宝商家
+        String excelPath1 = "E:\\a_报表\\20241010对账--十月份\\0923-1006\\zfb-shop-0923-1006.xls";
+
+        System.out.println("--------------------------支付宝商家还没做！--------------------------------------------------------");
+    }
+    private static void wxShop() {
+        System.out.println("--------------------------------------------------------------------------------------");
         // 指定文件的位置（相对于此电脑）---------- 微信商家
-         String excelPath1 = "E:\\a_财务报表文档\\2024-9月份对账-0825-0919-大致齐的\\20240920对账-0918-0919\\wxShop-0918-0919.xlsx";
-         Map<String, Object> res = WxExcelUtils.analyseData(excelPath1);
-
-        System.out.println("\n##################################################################\n");
-
-         // 指定文件的位置（相对于此电脑）---------- ytw微信支付
-        String excelPath = "E:\\a_财务报表文档\\2024-9月份对账-0825-0919-大致齐的\\20240920对账-0918-0919\\ytw&dp-wx-0918-0919.xlsx";
-        Object res2 = YtwExcelUtils.analyseYtwExcel(excelPath);
+        String excelPath = "E:\\a_报表\\20241010对账--十月份\\0923-1006\\wx-shop-0923-1006.xlsx";
+        Map<String, Object> map = WxExcelUtils.analyseData(excelPath);
+        System.out.println("--------------------------------------------------------------------------------------");
+    }
+    private static void ytwWx() {
+        System.out.println("--------------------------------------------------------------------------------------");
+        YtwExcelUtils.analyseYtwExcel("E:\\a_报表\\20241010对账--十月份\\0923-1006\\ytw&dp-wx-0923-1006.xlsx");
+        System.out.println("--------------------------------------------------------------------------------------");
+    }
+    private static void ytwZfb() {
+        System.out.println("--------------------------------------------------------------------------------------");
+        YtwExcelUtils.analyseYtwExcel("E:\\a_报表\\20241010对账--十月份\\0923-1006\\ytw&dp-zfb-0923-1006.xlsx");
+        System.out.println("--------------------------------------------------------------------------------------");
     }
 }
