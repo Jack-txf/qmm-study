@@ -20,6 +20,7 @@
         <module>log-tool</module>
         <module>yt-tool</module>
         <module>database-pool</module>
+        <module>algorithm</module>
     </modules>
 
     <properties>
