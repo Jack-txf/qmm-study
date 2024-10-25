@@ -21,6 +21,7 @@
         <module>yt-tool</module>
         <module>database-pool</module>
         <module>algorithm</module>
+        <module>async-study/aqs</module>
     </modules>
 
     <properties>
