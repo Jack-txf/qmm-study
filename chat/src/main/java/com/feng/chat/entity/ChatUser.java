@@ -20,13 +20,15 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("chat_msg")
+@TableName("chat_user")
 public class ChatUser{
 
     @TableId(type = IdType.AUTO)
-    private Integer uid;
+    private Long uid;
 
     private String username;
+
+    private String phone;
 
     private String password;
 

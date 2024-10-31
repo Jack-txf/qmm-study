@@ -21,30 +21,30 @@ public class Netty1 {
     }
 
     public void start() {
-        NioEventLoopGroup boss = new NioEventLoopGroup(1);
-        NioEventLoopGroup work = new NioEventLoopGroup();
-        try {
-            ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(boss, work)
-                    .channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new StringDecoder(StandardCharsets.UTF_8));
-                            ch.pipeline().addLast(new StringEncoder(StandardCharsets.UTF_8));
-                            // 添加自定义的业务处理器
-                            ch.pipeline().addLast(new MyServerHandler());
-                        }
-                    });
-            ChannelFuture future = bootstrap.bind(port).sync();
-            future.channel().closeFuture().sync();
-        } catch (InterruptedException e) {
-            System.out.println("【服务启动失败】~~~~~~~~");
-        } finally {
-            boss.shutdownGracefully();
-            work.shutdownGracefully();
-        }
+        // NioEventLoopGroup boss = new NioEventLoopGroup(1);
+        // NioEventLoopGroup work = new NioEventLoopGroup();
+        // try {
+        //     ServerBootstrap bootstrap = new ServerBootstrap();
+        //     bootstrap.group(boss, work)
+        //             .channel(NioServerSocketChannel.class)
+        //             .handler(new LoggingHandler(LogLevel.INFO))
+        //             .childHandler(new ChannelInitializer<SocketChannel>() {
+        //                 @Override
+        //                 public void initChannel(SocketChannel ch) throws Exception {
+        //                     ch.pipeline().addLast(new StringDecoder(StandardCharsets.UTF_8));
+        //                     ch.pipeline().addLast(new StringEncoder(StandardCharsets.UTF_8));
+        //                     // 添加自定义的业务处理器
+        //                     ch.pipeline().addLast(new MyServerHandler());
+        //                 }
+        //             });
+        //     ChannelFuture future = bootstrap.bind(port).sync();
+        //     future.channel().closeFuture().sync();
+        // } catch (InterruptedException e) {
+        //     System.out.println("【服务启动失败】~~~~~~~~");
+        // } finally {
+        //     boss.shutdownGracefully();
+        //     work.shutdownGracefully();
+        // }
     }
 
     public void stop() {

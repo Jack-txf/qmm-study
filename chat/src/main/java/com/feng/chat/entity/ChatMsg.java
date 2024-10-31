@@ -31,39 +31,5 @@ public class ChatMsg {
     private Integer toUser;
 
     private String msgDesc;
-
-
-    public String getMsgId() {
-        return msgId;
-    }
-
-    public void setMsgId(String msgId) {
-        this.msgId = msgId;
-    }
-
-    public Integer getFromUser() {
-        return fromUser;
-    }
-
-    public void setFromUser(Integer fromUser) {
-        this.fromUser = fromUser;
-    }
-
-    public Integer getToUser() {
-        return toUser;
-    }
-
-    public void setToUser(Integer toUser) {
-        this.toUser = toUser;
-    }
-
-    public String getMsgDesc() {
-        return msgDesc;
-    }
-
-    public void setMsgDesc(String msgDesc) {
-        this.msgDesc = msgDesc;
-    }
-
 }
 

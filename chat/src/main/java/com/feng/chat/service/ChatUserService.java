@@ -2,6 +2,7 @@ package com.feng.chat.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.feng.chat.entity.ChatUser;
+import com.feng.chat.entity.dto.LoginUser;
 
 /**
  * (ChatUser)表服务接口
@@ -11,5 +12,6 @@ import com.feng.chat.entity.ChatUser;
  */
 public interface ChatUserService extends IService<ChatUser> {
 
+    String loginByUsernamePassword(LoginUser loginUser);
 }
 
