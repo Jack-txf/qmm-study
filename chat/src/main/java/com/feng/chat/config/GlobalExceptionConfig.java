@@ -45,11 +45,13 @@ public class GlobalExceptionConfig {
     public R exception(MethodArgumentNotValidException e, HttpServletRequest request) {
         BindingResult bindingResult = e.getBindingResult();
         log.error("请求[ {} ] {} 的参数校验发生错误", request.getMethod(), request.getRequestURL());
-        for (ObjectError objectError : bindingResult.getAllErrors()) {
-            FieldError fieldError = (FieldError) objectError;
-            log.error("参数 {} = {} 校验错误：{}", fieldError.getField(), fieldError.getRejectedValue(), fieldError.getDefaultMessage());
-        }
-        return R.fail(402).setData("msg","参数异常");
+        String msg = null;
+        ObjectError error = bindingResult.getAllErrors().get(0);
+        // for (ObjectError objectError : bindingResult.getAllErrors()) {
+        //     FieldError fieldError = (FieldError) objectError;
+        //     log.error("参数 {} = {} 校验错误：{}", fieldError.getField(), fieldError.getRejectedValue(), fieldError.getDefaultMessage());
+        // }
+        return R.fail(402).setData("msg","【参数异常】:" + error.getDefaultMessage());
     }
 
     /**

@@ -35,6 +35,12 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
 
     @Override
     public String loginByUsernamePassword(LoginUser loginUser) {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         ChatUser user = chatUserMapper.selectOne(new QueryWrapper<ChatUser>().eq("username", loginUser.getUsername()));
         if ( user == null ) throw new MyException("该账号不存在");
         if ( !user.getPassword().equals(loginUser.getPassword()) ) throw new MyException("账号密码不匹配");

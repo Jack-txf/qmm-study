@@ -21,7 +21,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("【我是登录拦截器】");
+        log.info("【我是登录拦截器】" + request.getRequestURI());
         String token = request.getHeader("chat-token");
         if ( token == null ) throw new MyException("您还未登录!");
         String loginUserId = null;

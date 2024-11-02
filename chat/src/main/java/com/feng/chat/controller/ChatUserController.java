@@ -26,7 +26,7 @@ public class ChatUserController extends ApiController {
     @Resource
     private ChatUserService chatUserService;
 
-    @PostMapping("/login")
+    @PostMapping("/login1")
     public R chatUserLogin(@RequestBody @Validated LoginUser loginUser) {
         String token = chatUserService.loginByUsernamePassword(loginUser);
         return R.success().setData("msg", "登录成功！")
