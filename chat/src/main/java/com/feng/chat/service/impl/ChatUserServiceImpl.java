@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.feng.chat.entity.ChatUser;
+import com.feng.chat.entity.dto.FriendDto;
 import com.feng.chat.entity.dto.LoginUser;
 import com.feng.chat.exception.MyException;
 import com.feng.chat.mapper.ChatMsgMapper;
@@ -16,6 +17,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -57,6 +59,12 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
 
         redisTemplate.opsForValue().set("userToken" + user.getUid(), tokenValue, 60, TimeUnit.SECONDS);
         return tokenValue;
+    }
+
+    @Override
+    public List<FriendDto> getMyFriends(Long uid) {
+
+        return null;
     }
 }
 

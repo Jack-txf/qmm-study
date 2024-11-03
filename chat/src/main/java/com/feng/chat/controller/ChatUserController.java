@@ -3,12 +3,15 @@ package com.feng.chat.controller;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.feng.chat.common.R;
 import com.feng.chat.entity.ChatUser;
+import com.feng.chat.entity.dto.FriendDto;
 import com.feng.chat.entity.dto.LoginUser;
 import com.feng.chat.exception.MyException;
 import com.feng.chat.service.ChatUserService;
+import com.feng.chat.utils.UserContextUtil;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -31,6 +34,13 @@ public class ChatUserController extends ApiController {
         String token = chatUserService.loginByUsernamePassword(loginUser);
         return R.success().setData("msg", "登录成功！")
                 .setData("chatToken", token);
+    }
+
+    // 获取用户的好友
+    @GetMapping("/getMyFriends")
+    public R getMyFriends(HttpServletRequest request) {
+        List<FriendDto> friendDtos = chatUserService.getMyFriends(UserContextUtil.getUid());
+        return R.success().setData("friends", friendDtos);
     }
 
     @GetMapping("/test")
