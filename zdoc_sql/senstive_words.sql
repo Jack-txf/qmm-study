@@ -11,7 +11,7 @@
  Target Server Version : 80035
  File Encoding         : 65001
 
- Date: 31/07/2024 20:40:55
+ Date: 06/11/2024 22:17:47
 */
 
 SET NAMES utf8mb4;
@@ -34,20 +34,64 @@ CREATE TABLE `chat_msg`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for chat_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `chat_relation`;
+CREATE TABLE `chat_relation`  (
+  `relation_id` bigint NOT NULL AUTO_INCREMENT COMMENT '关系id',
+  `uid_auser` bigint NULL DEFAULT NULL COMMENT 'a用户',
+  `uid_buser` bigint NULL DEFAULT NULL COMMENT 'b用户',
+  PRIMARY KEY (`relation_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of chat_relation
+-- ----------------------------
+INSERT INTO `chat_relation` VALUES (1, 1, 2);
+INSERT INTO `chat_relation` VALUES (2, 3, 1);
+INSERT INTO `chat_relation` VALUES (3, 1, 4);
+INSERT INTO `chat_relation` VALUES (4, 1, 5);
+INSERT INTO `chat_relation` VALUES (5, 1, 6);
+INSERT INTO `chat_relation` VALUES (6, 1, 7);
+
+-- ----------------------------
+-- Table structure for chat_room
+-- ----------------------------
+DROP TABLE IF EXISTS `chat_room`;
+CREATE TABLE `chat_room`  (
+  `room_id` bigint NOT NULL COMMENT '房间Id',
+  `owner_id` bigint NULL DEFAULT NULL COMMENT '房主--对应的是chat_user表中的uid',
+  `room_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '房间名称',
+  PRIMARY KEY (`room_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of chat_room
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for chat_user
 -- ----------------------------
 DROP TABLE IF EXISTS `chat_user`;
 CREATE TABLE `chat_user`  (
-  `uid` int NOT NULL AUTO_INCREMENT,
+  `uid` bigint NOT NULL AUTO_INCREMENT,
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `nick` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`uid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of chat_user
 -- ----------------------------
+INSERT INTO `chat_user` VALUES (1, '12345678910', NULL, '123456789', '别来无恙');
+INSERT INTO `chat_user` VALUES (2, 'qwerqwerqwer', NULL, '123456789', '嚯嚯嚯');
+INSERT INTO `chat_user` VALUES (3, '1101101102', NULL, '123456789', '刘德华');
+INSERT INTO `chat_user` VALUES (4, '1101101103', NULL, '123456789', '郭富城');
+INSERT INTO `chat_user` VALUES (5, '1101101104', NULL, '123456789', '黎明');
+INSERT INTO `chat_user` VALUES (6, '1101101105', NULL, '123456789', '张学友');
+INSERT INTO `chat_user` VALUES (7, '1101101106', NULL, '123456789', '尼哥');
 
 -- ----------------------------
 -- Table structure for date_tab
@@ -65,6 +109,21 @@ CREATE TABLE `date_tab`  (
 -- Records of date_tab
 -- ----------------------------
 INSERT INTO `date_tab` VALUES (4, 'aaaaaaaaaaaaaaaaaa', '2024-07-29 20:38:18', '2024-07-29 20:38:18');
+
+-- ----------------------------
+-- Table structure for room_user_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `room_user_relation`;
+CREATE TABLE `room_user_relation`  (
+  `relation_id` bigint NOT NULL,
+  `room_id` bigint NULL DEFAULT NULL COMMENT '房间id',
+  `uid` bigint NULL DEFAULT NULL COMMENT '用户id',
+  PRIMARY KEY (`relation_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of room_user_relation
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for words_tab
