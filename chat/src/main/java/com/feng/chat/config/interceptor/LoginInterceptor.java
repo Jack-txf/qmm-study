@@ -21,9 +21,10 @@ public class LoginInterceptor implements HandlerInterceptor {
     // private RedisTemplate redisTemplate;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws MyException {
         log.info("【我是登录拦截器】" + request.getRequestURI());
-        String token = request.getHeader("chat-token");
+        String token = request.getHeader("Chattoken");
+        System.out.println("【token】:" + token);
         if ( token == null ) throw new MyException("您还未登录!");
         Long loginUserId = null;
         try {

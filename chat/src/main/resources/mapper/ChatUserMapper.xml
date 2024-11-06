@@ -14,9 +14,24 @@
         insert into senstive_words.chat_user(usernamepasswordnick)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.username}#{entity.password}#{entity.nick})
+        (#{entity.username}, #{entity.password}, #{entity.nick})
         </foreach>
     </insert>
+
+    <!-- 查找朋友列表 -->
+    <select id="selectFriends" resultType="com.feng.chat.entity.dto.FriendDto">
+        select uid, nick
+        from chat_user cu
+        where cu.uid in (
+            select uid_buser
+            from chat_relation
+            where uid_auser = #{uid}
+            union
+            select uid_auser
+            from chat_relation
+            where uid_buser = #{uid}
+        );
+    </select>
 
 </mapper>
 

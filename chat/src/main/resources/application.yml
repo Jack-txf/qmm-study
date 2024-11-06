@@ -54,3 +54,4 @@ white:
   urls:
     - "/chatUser/login"
     - "/chatUser/login1"
+    - "/txfChat/**"

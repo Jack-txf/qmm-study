@@ -22,14 +22,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**") // 拦截所有的
                 .excludePathPatterns(propertiesConfig.getUrls()); // 除了白名单
     }
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // 指定哪些路径需要CORS支持
-                .allowedOrigins("*") // 允许哪些源进行跨域请求
-                // .allowedOriginPatterns(".*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 允许哪些HTTP方法
-                .allowedHeaders("*"); // 允许哪些HTTP头
-                // .allowCredentials(true); // 是否允许发送凭证（如Cookies）
+        registry.addMapping("/**") // 允许所有访问路径
+                .allowedOrigins("*") // 允许的域名，可以使用*表示所有域名，或者指定具体的域名
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 允许的请求方法
+                .allowedHeaders("*") // 允许的请求头
+                // .allowCredentials(true) // 是否允许请求携带验证信息（如Cookies）
+                .maxAge(3600); // 预检请求的有效期（秒）
     }
 }

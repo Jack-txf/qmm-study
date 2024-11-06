@@ -3,6 +3,7 @@ package com.feng.chat.mapper;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.feng.chat.entity.dto.FriendDto;
 import org.apache.ibatis.annotations.Param;
 import com.feng.chat.entity.ChatUser;
 
@@ -20,5 +21,7 @@ public interface ChatUserMapper extends BaseMapper<ChatUser> {
     * @return 影响行数
     */
     int insertBatch(@Param("entities") List<ChatUser> entities);
+
+    List<FriendDto> selectFriends(@Param("uid") Long uid);
 }
 

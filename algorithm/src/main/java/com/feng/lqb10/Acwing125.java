@@ -1,5 +1,7 @@
 package com.feng.lqb10;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -26,5 +28,13 @@ public class Acwing125 {
 
         System.out.println(ans);
         in.close();
+    }
+
+    @Test
+    public void test() {
+        String s = "123456:";
+        String substring = s.substring(s.indexOf(":") + 1);
+        System.out.println(substring);
+        // System.out.println(l);
     }
 }

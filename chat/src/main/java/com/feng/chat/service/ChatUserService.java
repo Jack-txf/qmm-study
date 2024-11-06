@@ -1,6 +1,7 @@
 package com.feng.chat.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.feng.chat.common.R;
 import com.feng.chat.entity.ChatUser;
 import com.feng.chat.entity.dto.FriendDto;
 import com.feng.chat.entity.dto.LoginUser;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public interface ChatUserService extends IService<ChatUser> {
 
-    String loginByUsernamePassword(LoginUser loginUser);
+    R loginByUsernamePassword(LoginUser loginUser);
 
     List<FriendDto> getMyFriends(Long uid);
 }

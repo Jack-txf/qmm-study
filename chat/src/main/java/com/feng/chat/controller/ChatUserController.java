@@ -22,6 +22,7 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/chatUser")
+@CrossOrigin
 public class ChatUserController extends ApiController {
     /**
      * 服务对象
@@ -31,9 +32,7 @@ public class ChatUserController extends ApiController {
 
     @PostMapping("/login1")
     public R chatUserLogin(@RequestBody @Validated LoginUser loginUser) {
-        String token = chatUserService.loginByUsernamePassword(loginUser);
-        return R.success().setData("msg", "登录成功！")
-                .setData("chatToken", token);
+        return chatUserService.loginByUsernamePassword(loginUser);
     }
 
     // 获取用户的好友
