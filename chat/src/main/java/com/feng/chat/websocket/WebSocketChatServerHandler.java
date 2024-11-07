@@ -1,5 +1,9 @@
 package com.feng.chat.websocket;
 
+import com.feng.chat.entity.dto.FriendDto;
+import com.feng.chat.mapper.ChatUserMapper;
+import com.feng.chat.websocket.message.BaseMessage;
+import com.feng.chat.websocket.message.FlushFriendListMsg;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -10,6 +14,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import javax.annotation.Resource;
 import java.net.InetSocketAddress;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +22,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @Slf4j
 public class WebSocketChatServerHandler extends TextWebSocketHandler {
+    @Resource
+    private ChatUserMapper chatUserMapper;
     @Resource
     private RedisTemplate<String, Object> redisTemplate; // redis来判断token吧
 
@@ -27,11 +34,8 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
     // 连接建立后可进行的操作
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        System.out.println("到这了，handler里面");
+        log.info("【建立websocket连接】 {}", session);
         Map<String, Object> attributes = session.getAttributes();
-        attributes.forEach((k, v)->{
-            System.out.println("k:" + k + "  v:" + v );
-        });
         String token = (String) attributes.get("token");
         String resStr;
         if ( token == null ) { // 第一道
@@ -41,7 +45,6 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
             return ;
         }
         String tokenStr = (String) redisTemplate.opsForValue().get(token); // 第二道
-        System.out.println(tokenStr);
         if ( tokenStr == null ) {
             resStr = "您还未登录呢！";
             session.sendMessage(new TextMessage(resStr));
@@ -62,8 +65,10 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
             session.close(); // 关闭
         } else {
             onlineSessions.put(uid, session); // 加入连接
-            resStr = "连接成功！";
-            session.sendMessage(new TextMessage(resStr));
+            log.info(" 连接成功!【当前人数】：{}, ", onlineSessions.size());
+            BaseMessage msg = new FlushFriendListMsg();
+            msg.setContent(chatUserMapper.selectFriends(uid));
+            session.sendMessage(new TextMessage(msg.toJsonMsg()));
         }
     }
 
