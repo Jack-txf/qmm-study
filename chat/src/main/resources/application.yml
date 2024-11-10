@@ -33,6 +33,12 @@ spring:
     port: 6379
     password: TXFtxf1121512752
     database: 10
+    lettuce:
+      pool:
+        max-active: 10
+        max-wait: -1ms
+        min-idle: 0
+        max-idle: 8
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
   # token 名称（同时也是 cookie 名称）

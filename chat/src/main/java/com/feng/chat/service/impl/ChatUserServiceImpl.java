@@ -14,6 +14,8 @@ import com.feng.chat.mapper.ChatMsgMapper;
 import com.feng.chat.mapper.ChatUserMapper;
 import com.feng.chat.service.ChatUserService;
 import com.feng.chat.utils.TokenSecretUtil;
+import com.feng.chat.utils.UserContextUtil;
+import com.feng.chat.websocket.WebSocketChatServerHandler;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +37,8 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
     private ChatUserMapper chatUserMapper;
     @Resource
     private RedisTemplate redisTemplate;
+    @Resource
+    private WebSocketChatServerHandler webSocketChatServerHandler;
 
     @Override
     public R loginByUsernamePassword(LoginUser loginUser) {
@@ -55,6 +59,21 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
     @Override
     public List<FriendDto> getMyFriends(Long uid) {
         return chatUserMapper.selectFriends(uid);
+    }
+
+    @Override
+    public R logout() {
+        // 登出
+        StpUtil.logout(); // 会话登出
+
+        // websocket中移除
+        webSocketChatServerHandler.userLogout(UserContextUtil.getUid());
+
+        // redis删除
+        String token = StpUtil.getTokenValue();
+        redisTemplate.opsForValue().getAndDelete(token);
+
+        return R.success().setData("msg", "登出成功!");
     }
 }
 

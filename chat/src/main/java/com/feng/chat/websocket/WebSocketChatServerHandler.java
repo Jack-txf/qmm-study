@@ -1,9 +1,9 @@
 package com.feng.chat.websocket;
 
-import com.feng.chat.entity.dto.FriendDto;
 import com.feng.chat.mapper.ChatUserMapper;
-import com.feng.chat.websocket.message.BaseMessage;
-import com.feng.chat.websocket.message.FlushFriendListMsg;
+import com.feng.chat.websocket.message.Message;
+import com.feng.chat.websocket.message.MessageUtil;
+import com.feng.chat.websocket.message.MsgType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -14,12 +14,11 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import javax.annotation.Resource;
 import java.net.InetSocketAddress;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 // 比较原始的方法
-@Component
+@Component(value = "webSocketChatServerHandler")
 @Slf4j
 public class WebSocketChatServerHandler extends TextWebSocketHandler {
     @Resource
@@ -31,6 +30,11 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
     // k:uid  v:uid的session
     private static final Map<Long, WebSocketSession> onlineSessions = new ConcurrentHashMap<>();
 
+    public void userLogout( Long uid ) {
+        onlineSessions.remove(uid);
+        log.info("{} 【退出websocket连接】, 当前在线人数：{}", uid, onlineSessions.size());
+    }
+
     // 连接建立后可进行的操作
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -39,34 +43,30 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
         String token = (String) attributes.get("token");
         String resStr;
         if ( token == null ) { // 第一道
-            resStr = "您还未登录呢！";
-            session.sendMessage(new TextMessage(resStr));
+            session.sendMessage(new TextMessage(MessageUtil.failMessage("您还未登录呢！").toJsonMsg()));
             session.close(); // 关闭
             return ;
         }
         String tokenStr = (String) redisTemplate.opsForValue().get(token); // 第二道
         if ( tokenStr == null ) {
-            resStr = "您还未登录呢！";
-            session.sendMessage(new TextMessage(resStr));
+            session.sendMessage(new TextMessage(MessageUtil.failMessage("您还未登录呢！").toJsonMsg()));
             session.close(); // 关闭
             return ;
         }
         String uidStr = tokenStr.substring(tokenStr.indexOf(":") + 1);
         if ( uidStr.isEmpty() ) {
-            resStr = "您还未登录呢！";
-            session.sendMessage(new TextMessage(resStr));
+            session.sendMessage(new TextMessage(MessageUtil.failMessage("您还未登录呢！").toJsonMsg()));
             session.close(); // 关闭
             return ;
         }
         Long uid = Long.valueOf(uidStr);
         if ( onlineSessions.containsKey(uid) ) { // 已经登录过了
-            resStr = "您在别的设备已经登录过了！";
-            session.sendMessage(new TextMessage(resStr));
+            session.sendMessage(new TextMessage(MessageUtil.failMessage("您在别的设备已经登录过了！").toJsonMsg()));
             session.close(); // 关闭
         } else {
             onlineSessions.put(uid, session); // 加入连接
             log.info(" 连接成功!【当前人数】：{}, ", onlineSessions.size());
-            BaseMessage msg = new FlushFriendListMsg();
+            Message msg = new Message(MsgType.FLUSHFRIEND.getDescription());
             msg.setContent(chatUserMapper.selectFriends(uid));
             session.sendMessage(new TextMessage(msg.toJsonMsg()));
         }

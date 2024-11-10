@@ -19,5 +19,7 @@ public interface ChatUserService extends IService<ChatUser> {
     R loginByUsernamePassword(LoginUser loginUser);
 
     List<FriendDto> getMyFriends(Long uid);
+
+    R logout();
 }
 

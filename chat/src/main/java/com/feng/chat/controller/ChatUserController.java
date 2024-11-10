@@ -30,6 +30,11 @@ public class ChatUserController extends ApiController {
     @Resource
     private ChatUserService chatUserService;
 
+    @PostMapping("/logout")
+    public R chatUserLogout() {
+        return chatUserService.logout();
+    }
+
     @PostMapping("/login1")
     public R chatUserLogin(@RequestBody @Validated LoginUser loginUser) {
         return chatUserService.loginByUsernamePassword(loginUser);

@@ -5,7 +5,9 @@ import lombok.Getter;
 @Getter
 public enum MsgType {
     FLUSHFRIEND("flushFriend"),
-    SYSTEM("system");
+    SYSTEM("system"),
+    FAIL("fail");
+
     private final String description;
     MsgType(String description) {
         this.description = description; // 初始化描述信息
