@@ -5,6 +5,7 @@ import com.feng.chat.common.R;
 import com.feng.chat.entity.ChatUser;
 import com.feng.chat.entity.dto.FriendDto;
 import com.feng.chat.entity.dto.LoginUser;
+import com.feng.chat.entity.dto.UpdateFormDto;
 
 import java.util.List;
 
@@ -21,5 +22,11 @@ public interface ChatUserService extends IService<ChatUser> {
     List<FriendDto> getMyFriends(Long uid);
 
     R logout();
+
+    R getMyBaseInfo();
+
+    R updateNick(UpdateFormDto updateFormDto);
+
+    R updatePwd(UpdateFormDto updateFormDto);
 }
 

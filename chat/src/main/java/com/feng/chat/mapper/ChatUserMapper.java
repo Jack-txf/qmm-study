@@ -23,5 +23,9 @@ public interface ChatUserMapper extends BaseMapper<ChatUser> {
     int insertBatch(@Param("entities") List<ChatUser> entities);
 
     List<FriendDto> selectFriends(@Param("uid") Long uid);
+
+    void updateNick(@Param("nick") String nick, @Param("uid") Long uid);
+
+    void updatePwd(@Param("uid") Long uid, @Param("password") String password);
 }
 

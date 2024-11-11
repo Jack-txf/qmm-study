@@ -33,5 +33,16 @@
         );
     </select>
 
+    <update id="updateNick">
+        update chat_user
+        set nick = #{nick}
+        where uid = #{uid}
+    </update>
+
+    <update id="updatePwd">
+        update chat_user
+        set password = #{password}
+        where uid = #{uid}
+    </update>
 </mapper>
 

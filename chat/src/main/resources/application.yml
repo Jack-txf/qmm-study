@@ -19,15 +19,15 @@ spring:
         master:
           type: com.alibaba.druid.pool.DruidDataSource
           username: root
-          password: TXFtxf1121512752
+          password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
           url: jdbc:mysql://localhost:3306/senstive_words?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
-        txf:
-          type: com.alibaba.druid.pool.DruidDataSource
-          username: root
-          password: TXFtxf1121512752
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://localhost:3306/txf_club_db?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
+#        txf:
+#          type: com.alibaba.druid.pool.DruidDataSource
+#          username: root
+#          password: TXFtxf1121512752
+#          driver-class-name: com.mysql.cj.jdbc.Driver
+#          url: jdbc:mysql://localhost:3306/txf_club_db?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
   redis:
     host: 47.108.81.82
     port: 6379

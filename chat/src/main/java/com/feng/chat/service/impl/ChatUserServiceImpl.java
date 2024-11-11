@@ -1,6 +1,7 @@
 package com.feng.chat.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
@@ -9,6 +10,7 @@ import com.feng.chat.common.R;
 import com.feng.chat.entity.ChatUser;
 import com.feng.chat.entity.dto.FriendDto;
 import com.feng.chat.entity.dto.LoginUser;
+import com.feng.chat.entity.dto.UpdateFormDto;
 import com.feng.chat.exception.MyException;
 import com.feng.chat.mapper.ChatMsgMapper;
 import com.feng.chat.mapper.ChatUserMapper;
@@ -16,6 +18,7 @@ import com.feng.chat.service.ChatUserService;
 import com.feng.chat.utils.TokenSecretUtil;
 import com.feng.chat.utils.UserContextUtil;
 import com.feng.chat.websocket.WebSocketChatServerHandler;
+import org.apache.catalina.User;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +34,11 @@ import java.util.concurrent.TimeUnit;
  * @since 2024-07-31 20:35:31
  */
 @Service("chatUserService")
-@SuppressWarnings("unchecked")
 public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> implements ChatUserService {
     @Resource
     private ChatUserMapper chatUserMapper;
     @Resource
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
     @Resource
     private WebSocketChatServerHandler webSocketChatServerHandler;
 
@@ -49,6 +51,8 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
         StpUtil.login(user.getUid());
         String tokenValue = StpUtil.getTokenValue();
         redisTemplate.opsForValue().set(tokenValue, "userToken:" + user.getUid(), 60, TimeUnit.MINUTES);
+
+        user.setPassword("");
 
         return R.success()
                 .setData("userInfo", user)
@@ -74,6 +78,46 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
         redisTemplate.opsForValue().getAndDelete(token);
 
         return R.success().setData("msg", "登出成功!");
+    }
+
+    @Override
+    public R getMyBaseInfo() {
+        Long uid = UserContextUtil.getUid();
+        ChatUser chatUser = chatUserMapper.selectById(uid);
+        chatUser.setPassword("");
+        return R.success().setData("myBaseInfo", chatUser);
+    }
+
+    @Override
+    public R updateNick(UpdateFormDto updateFormDto) {
+        String nick = updateFormDto.getNick(); // 新的昵称
+        if ( nick == null || nick.isEmpty() ) return R.fail().setData("msg", "昵称长度不能为0!");
+        Long uid = UserContextUtil.getUid();
+
+        ChatUser user = chatUserMapper.selectOne(new LambdaQueryWrapper<ChatUser>().eq(ChatUser::getNick, nick));
+        if ( user != null ) { // 不能更新
+            if ( user.getUid().equals(uid) ) return R.fail().setData("msg", "修改前后昵称相同!");
+            else return R.fail().setData("msg", "改昵称已被使用!");
+        }
+        chatUserMapper.updateNick(nick, uid); // 可以更新
+        ChatUser chatUser = chatUserMapper.selectById(uid);
+        chatUser.setPassword("");
+
+        return R.success().setData("myBaseInfo", chatUser);
+    }
+
+    @Override
+    public R updatePwd(UpdateFormDto updateFormDto) {
+        String oldPassword = updateFormDto.getOldPassword();
+        String password = updateFormDto.getPassword();
+        if (oldPassword == null || !oldPassword.equals(password))
+            return R.fail().setData("msg", "新旧密码不一致！");
+        Long uid = UserContextUtil.getUid();
+        ChatUser chatUser = chatUserMapper.selectById(uid);
+        if ( !chatUser.getPassword().equals(oldPassword) )
+            return R.fail().setData("msg", "您输入的旧密码错误!");
+        chatUserMapper.updatePwd(uid, password);
+        return R.success().setData("msg", "密码修改成功!");
     }
 }
 
