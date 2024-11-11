@@ -17,7 +17,6 @@ import java.util.*;
 
 /**
  * (ChatUser)表控制层
- *
  * @author makejava
  * @since 2024-07-31 20:35:31
  */
@@ -25,12 +24,11 @@ import java.util.*;
 @RequestMapping("/chatUser")
 @CrossOrigin
 public class ChatUserController extends ApiController {
-    /**
-     * 服务对象
-     */
+
     @Resource
     private ChatUserService chatUserService;
 
+    // 用户登出
     @PostMapping("/logout")
     public R chatUserLogout() {
         return chatUserService.logout();
@@ -53,6 +51,7 @@ public class ChatUserController extends ApiController {
     public R getMyBaseInfo() {
         return chatUserService.getMyBaseInfo();
     }
+
     // 修改昵称
     @PostMapping("/updateNick")
     public R updateNick( @RequestBody @Validated UpdateFormDto updateFormDto ) {
@@ -64,6 +63,19 @@ public class ChatUserController extends ApiController {
     public R updatePwd(@RequestBody @Validated UpdateFormDto updateFormDto ) {
         return chatUserService.updatePwd(updateFormDto);
     }
+
+    // 搜索好友
+    @GetMapping("/findFriendsByChatNo/{chatNo}")
+    public R findFriendsByChatNo(@PathVariable("chatNo") String chatNo) {
+        return chatUserService.findFriendsByChatNo(chatNo);
+    }
+
+    // 发送好友申请
+    @PostMapping("/sendFriendInvite")
+    public R sendFriendInvite() {
+        return R.success();
+    }
+
 
     @GetMapping("/test")
     public R test() {

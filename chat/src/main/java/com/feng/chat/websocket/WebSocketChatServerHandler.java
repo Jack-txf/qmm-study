@@ -65,7 +65,7 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
             session.close(); // 关闭
         } else {
             onlineSessions.put(uid, session); // 加入连接
-            log.info(" 连接成功!【当前人数】：{}, ", onlineSessions.size());
+            log.info(" 加入连接成功!【当前人数】：{}, ", onlineSessions.size());
             Message msg = new Message(MsgType.FLUSHFRIEND.getDescription());
             msg.setContent(chatUserMapper.selectFriends(uid));
             session.sendMessage(new TextMessage(msg.toJsonMsg()));
@@ -83,6 +83,15 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
     // 连接关闭后可进行的操作
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        Collection<WebSocketSession> values = onlineSessions.values();
+        while( values.contains(session))
+            values.remove(session);
+        log.info("【当前人数】：{}, ", onlineSessions.size());
+    }
+
+    @Override
+    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+        log.info("【连接出现了异常！现在断开此连接！】 {}", exception.getMessage());
         Collection<WebSocketSession> values = onlineSessions.values();
         while( values.contains(session))
             values.remove(session);

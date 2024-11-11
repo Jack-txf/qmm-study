@@ -28,5 +28,7 @@ public interface ChatUserService extends IService<ChatUser> {
     R updateNick(UpdateFormDto updateFormDto);
 
     R updatePwd(UpdateFormDto updateFormDto);
+
+    R findFriendsByChatNo(String chatNo);
 }
 

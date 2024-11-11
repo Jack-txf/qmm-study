@@ -110,14 +110,23 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
     public R updatePwd(UpdateFormDto updateFormDto) {
         String oldPassword = updateFormDto.getOldPassword();
         String password = updateFormDto.getPassword();
-        if (oldPassword == null || !oldPassword.equals(password))
-            return R.fail().setData("msg", "新旧密码不一致！");
+        if (oldPassword == null || oldPassword.equals(password))
+            return R.fail().setData("msg", "新旧密码一致！");
         Long uid = UserContextUtil.getUid();
         ChatUser chatUser = chatUserMapper.selectById(uid);
         if ( !chatUser.getPassword().equals(oldPassword) )
             return R.fail().setData("msg", "您输入的旧密码错误!");
         chatUserMapper.updatePwd(uid, password);
         return R.success().setData("msg", "密码修改成功!");
+    }
+
+    @Override
+    public R findFriendsByChatNo(String chatNo) {
+        // chatNo就是chat号，也就是username
+        ChatUser user = chatUserMapper.selectOne(new LambdaQueryWrapper<ChatUser>().eq(ChatUser::getUsername, chatNo));
+        if ( user == null ) return R.fail().setData("msg", "无法根据该chat号找到您要的好友!");
+        user.setPassword("");
+        return R.success().setData("friend", user).setData("msg", "查找成功!");
     }
 }
 
