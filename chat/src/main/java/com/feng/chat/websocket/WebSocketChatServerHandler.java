@@ -1,9 +1,9 @@
 package com.feng.chat.websocket;
 
 import com.feng.chat.entity.SysMsg;
+import com.feng.chat.entity.vo.UnReadSysMsgVo;
 import com.feng.chat.mapper.ChatUserMapper;
 import com.feng.chat.mapper.SysmsgMapper;
-import com.feng.chat.websocket.message.CustomerMessage;
 import com.feng.chat.websocket.message.Message;
 import com.feng.chat.websocket.message.MessageUtil;
 import com.feng.chat.websocket.message.MsgType;
@@ -15,6 +15,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.List;
@@ -115,14 +116,15 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
                 log.info("【添加好友的系统消息】{}  +  {}", sysMsg.getSendUser(), sysMsg.getToUser());
                 WebSocketSession session = onlineSessions.get(toUser);
                 // 从数据库里面查出toUser的未读消息
-                List<SysMsg> sysmsgs = sysmsgMapper.selectNeedReadMsg(toUser);
-                // session.sendMessage(new TextMessage());
+                List<UnReadSysMsgVo> sysmsgs = sysmsgMapper.selectNeedReadMsg(toUser);
+                try {
+                    session.sendMessage(new TextMessage(MessageUtil.unReadSysMsg(sysmsgs)));
+                } catch (IOException e) {
+                    log.info("发送消息出现了异常！{}", e.getMessage());
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    // 自用方法，构建消息
-    private List<CustomerMessage> createMsg(List<SysMsg> msgs) {
-        return null;
-    }
 }

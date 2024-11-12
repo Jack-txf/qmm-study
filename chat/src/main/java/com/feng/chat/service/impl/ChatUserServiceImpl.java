@@ -128,9 +128,11 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
 
     @Override
     public R findFriendsByChatNo(String chatNo) {
+        ChatUser me = chatUserMapper.selectById(UserContextUtil.getUid());
         // chatNo就是chat号，也就是username
         ChatUser user = chatUserMapper.selectOne(new LambdaQueryWrapper<ChatUser>().eq(ChatUser::getUsername, chatNo));
         if ( user == null ) return R.fail().setData("msg", "无法根据该chat号找到您要的好友!");
+        if ( me.getUsername().equals(user.getUsername())) return R.fail().setData("msg", "你搜你自己干嘛!??");
         user.setPassword("");
         return R.success().setData("friend", user).setData("msg", "查找成功!");
     }

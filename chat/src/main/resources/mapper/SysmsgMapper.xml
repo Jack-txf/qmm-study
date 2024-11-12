@@ -3,11 +3,16 @@
 <mapper namespace="com.feng.chat.mapper.SysmsgMapper">
 
     <!-- 查询未读消息 -->
-    <select id="selectNeedReadMsg" resultType="com.feng.chat.entity.SysMsg">
-        select *
-        from sys_msg_tab smt
-        where smt.to_user = #{toUser}
-            and smt.is_read = false
+    <select id="selectNeedReadMsg" resultType="com.feng.chat.entity.vo.UnReadSysMsgVo">
+        SELECT nick, username, smt.create_time, msg_type, phone, to_user
+        FROM
+            chat_user AS cu
+                LEFT JOIN
+            sys_msg_tab AS smt
+            ON cu.uid = smt.send_user
+        WHERE
+            smt.is_read = 0
+          AND smt.to_user = 2
         order by smt.create_time desc
     </select>
 
