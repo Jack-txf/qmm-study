@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : this_database
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80035
+ Source Server Version : 80023
  Source Host           : localhost:3306
  Source Schema         : senstive_words
 
  Target Server Type    : MySQL
- Target Server Version : 80035
+ Target Server Version : 80023
  File Encoding         : 65001
 
- Date: 06/11/2024 22:17:47
+ Date: 12/11/2024 17:19:07
 */
 
 SET NAMES utf8mb4;
@@ -26,8 +26,10 @@ CREATE TABLE `chat_msg`  (
   `from_user` int NULL DEFAULT NULL,
   `to_user` int NULL DEFAULT NULL,
   `msg_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `create_time` datetime NULL DEFAULT NULL,
+  `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`msg_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of chat_msg
@@ -41,18 +43,19 @@ CREATE TABLE `chat_relation`  (
   `relation_id` bigint NOT NULL AUTO_INCREMENT COMMENT '关系id',
   `uid_auser` bigint NULL DEFAULT NULL COMMENT 'a用户',
   `uid_buser` bigint NULL DEFAULT NULL COMMENT 'b用户',
+  `create_time` datetime NULL DEFAULT NULL,
+  `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`relation_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of chat_relation
 -- ----------------------------
-INSERT INTO `chat_relation` VALUES (1, 1, 2);
-INSERT INTO `chat_relation` VALUES (2, 3, 1);
-INSERT INTO `chat_relation` VALUES (3, 1, 4);
-INSERT INTO `chat_relation` VALUES (4, 1, 5);
-INSERT INTO `chat_relation` VALUES (5, 1, 6);
-INSERT INTO `chat_relation` VALUES (6, 1, 7);
+INSERT INTO `chat_relation` VALUES (2, 3, 1, '2024-11-12 15:25:02', '2024-11-12 15:25:02');
+INSERT INTO `chat_relation` VALUES (3, 1, 4, '2024-11-12 15:25:02', '2024-11-12 15:25:02');
+INSERT INTO `chat_relation` VALUES (4, 1, 5, '2024-11-12 15:25:02', '2024-11-12 15:25:02');
+INSERT INTO `chat_relation` VALUES (5, 1, 6, '2024-11-12 15:25:02', '2024-11-12 15:25:02');
+INSERT INTO `chat_relation` VALUES (6, 1, 7, '2024-11-12 15:25:02', '2024-11-12 15:25:02');
 
 -- ----------------------------
 -- Table structure for chat_room
@@ -62,8 +65,10 @@ CREATE TABLE `chat_room`  (
   `room_id` bigint NOT NULL COMMENT '房间Id',
   `owner_id` bigint NULL DEFAULT NULL COMMENT '房主--对应的是chat_user表中的uid',
   `room_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '房间名称',
+  `create_time` datetime NULL DEFAULT NULL,
+  `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`room_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of chat_room
@@ -79,19 +84,21 @@ CREATE TABLE `chat_user`  (
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `nick` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `create_time` datetime NULL DEFAULT NULL,
+  `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`uid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of chat_user
 -- ----------------------------
-INSERT INTO `chat_user` VALUES (1, '12345678910', NULL, '123456789', '别来无恙');
-INSERT INTO `chat_user` VALUES (2, 'qwerqwerqwer', NULL, '123456789', '嚯嚯嚯');
-INSERT INTO `chat_user` VALUES (3, '1101101102', NULL, '123456789', '刘德华');
-INSERT INTO `chat_user` VALUES (4, '1101101103', NULL, '123456789', '郭富城');
-INSERT INTO `chat_user` VALUES (5, '1101101104', NULL, '123456789', '黎明');
-INSERT INTO `chat_user` VALUES (6, '1101101105', NULL, '123456789', '张学友');
-INSERT INTO `chat_user` VALUES (7, '1101101106', NULL, '123456789', '尼哥');
+INSERT INTO `chat_user` VALUES (1, '12345678910', NULL, '123456789', '别来无恙', '2024-11-12 15:26:21', '2024-11-12 15:26:21');
+INSERT INTO `chat_user` VALUES (2, '12345678911', NULL, '123456789', '嚯嚯嚯21321', '2024-11-12 15:26:21', '2024-11-12 15:26:21');
+INSERT INTO `chat_user` VALUES (3, '1101101102', NULL, '123456789', '刘德华', '2024-11-12 15:26:21', '2024-11-12 15:26:21');
+INSERT INTO `chat_user` VALUES (4, '1101101103', NULL, '123456789', '郭富城', '2024-11-12 15:26:21', '2024-11-12 15:26:21');
+INSERT INTO `chat_user` VALUES (5, '1101101104', NULL, '123456789', '黎明', '2024-11-12 15:26:21', '2024-11-12 15:26:21');
+INSERT INTO `chat_user` VALUES (6, '1101101105', NULL, '123456789', '张学友', '2024-11-12 15:26:21', '2024-11-12 15:26:21');
+INSERT INTO `chat_user` VALUES (7, '1101101106', NULL, '123456789', '尼哥', '2024-11-12 15:26:21', '2024-11-12 15:26:21');
 
 -- ----------------------------
 -- Table structure for date_tab
@@ -103,7 +110,7 @@ CREATE TABLE `date_tab`  (
   `create_time` datetime NULL DEFAULT NULL,
   `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`t_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of date_tab
@@ -118,12 +125,35 @@ CREATE TABLE `room_user_relation`  (
   `relation_id` bigint NOT NULL,
   `room_id` bigint NULL DEFAULT NULL COMMENT '房间id',
   `uid` bigint NULL DEFAULT NULL COMMENT '用户id',
+  `create_time` datetime NULL DEFAULT NULL,
+  `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`relation_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of room_user_relation
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_msg_tab
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_msg_tab`;
+CREATE TABLE `sys_msg_tab`  (
+  `sysmsg_id` bigint NOT NULL AUTO_INCREMENT COMMENT '系统消息id (目前系统消息只有好友申请，群聊加入申请，邀请群聊申请)',
+  `send_user` bigint NULL DEFAULT NULL COMMENT '消息发送者',
+  `msg_type` int NULL DEFAULT NULL COMMENT '0-好友申请    1-群聊加入申请     2-邀请别人加入群聊',
+  `to_user` bigint NULL DEFAULT NULL COMMENT '消息接收者',
+  `is_read` bit(1) NULL DEFAULT b'0' COMMENT '消息接收者是否阅读过了',
+  `create_time` datetime NULL DEFAULT NULL,
+  `modify_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`sysmsg_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_msg_tab
+-- ----------------------------
+INSERT INTO `sys_msg_tab` VALUES (1, 1, 0, 2, b'0', '2024-11-12 17:17:05', '2024-11-12 17:17:09');
+INSERT INTO `sys_msg_tab` VALUES (2, 6, 0, 2, b'0', '2024-11-12 17:17:26', NULL);
 
 -- ----------------------------
 -- Table structure for words_tab
@@ -133,7 +163,7 @@ CREATE TABLE `words_tab`  (
   `words_id` int NOT NULL AUTO_INCREMENT,
   `words_content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`words_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 49603 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 49602 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of words_tab

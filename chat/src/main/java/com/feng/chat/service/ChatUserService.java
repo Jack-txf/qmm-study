@@ -8,6 +8,7 @@ import com.feng.chat.entity.dto.LoginUser;
 import com.feng.chat.entity.dto.UpdateFormDto;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * (ChatUser)表服务接口
@@ -30,5 +31,7 @@ public interface ChatUserService extends IService<ChatUser> {
     R updatePwd(UpdateFormDto updateFormDto);
 
     R findFriendsByChatNo(String chatNo);
+
+    R sendFriendInvite(Map<String, Object> invite);
 }
 

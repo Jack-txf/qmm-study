@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.feng.chat.mapper.SysmsgMapper">
+
+    <!-- 查询未读消息 -->
+    <select id="selectNeedReadMsg" resultType="com.feng.chat.entity.SysMsg">
+        select *
+        from sys_msg_tab smt
+        where smt.to_user = #{toUser}
+            and smt.is_read = false
+        order by smt.create_time desc
+    </select>
+
+</mapper>
+

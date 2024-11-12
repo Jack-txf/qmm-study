@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.feng.chat.entity.dto.FriendDto;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.feng.chat.entity.ChatUser;
 
@@ -13,6 +14,7 @@ import com.feng.chat.entity.ChatUser;
  * @author makejava
  * @since 2024-07-31 20:35:31
  */
+@Mapper
 public interface ChatUserMapper extends BaseMapper<ChatUser> {
     /**
     * 批量新增数据（MyBatis原生foreach方法）

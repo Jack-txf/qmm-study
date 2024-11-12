@@ -1,6 +1,9 @@
 package com.feng.chat.websocket;
 
+import com.feng.chat.entity.SysMsg;
 import com.feng.chat.mapper.ChatUserMapper;
+import com.feng.chat.mapper.SysmsgMapper;
+import com.feng.chat.websocket.message.CustomerMessage;
 import com.feng.chat.websocket.message.Message;
 import com.feng.chat.websocket.message.MessageUtil;
 import com.feng.chat.websocket.message.MsgType;
@@ -14,7 +17,9 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import javax.annotation.Resource;
 import java.net.InetSocketAddress;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 // 比较原始的方法
@@ -23,6 +28,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocketChatServerHandler extends TextWebSocketHandler {
     @Resource
     private ChatUserMapper chatUserMapper;
+    @Resource
+    private SysmsgMapper sysmsgMapper;
+
     @Resource
     private RedisTemplate<String, Object> redisTemplate; // redis来判断token吧
 
@@ -96,5 +104,25 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
         while( values.contains(session))
             values.remove(session);
         log.info("【当前人数】：{}, ", onlineSessions.size());
+    }
+
+    // 给用户发送系统消息
+    public void sendSysMsgToUser(SysMsg sysMsg) {
+        Long toUser = sysMsg.getToUser(); // 给这个人发型消息
+        Set<Long> uids = onlineSessions.keySet();
+        for (Long uid : uids) {
+            if ( toUser.equals(uid) ) { // 如果这个人在线
+                log.info("【添加好友的系统消息】{}  +  {}", sysMsg.getSendUser(), sysMsg.getToUser());
+                WebSocketSession session = onlineSessions.get(toUser);
+                // 从数据库里面查出toUser的未读消息
+                List<SysMsg> sysmsgs = sysmsgMapper.selectNeedReadMsg(toUser);
+                // session.sendMessage(new TextMessage());
+            }
+        }
+    }
+
+    // 自用方法，构建消息
+    private List<CustomerMessage> createMsg(List<SysMsg> msgs) {
+        return null;
     }
 }

@@ -72,8 +72,11 @@ public class ChatUserController extends ApiController {
 
     // 发送好友申请
     @PostMapping("/sendFriendInvite")
-    public R sendFriendInvite() {
-        return R.success();
+    public R sendFriendInvite(@RequestBody Map<String, Object> invite) {
+        /*
+         { "uid": uid, "username": username } uid和chat号
+         */
+        return chatUserService.sendFriendInvite(invite);
     }
 
 

@@ -6,8 +6,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.feng.chat.chatenum.SysmsgType;
 import com.feng.chat.common.R;
 import com.feng.chat.entity.ChatUser;
+import com.feng.chat.entity.SysMsg;
 import com.feng.chat.entity.dto.FriendDto;
 import com.feng.chat.entity.dto.LoginUser;
 import com.feng.chat.entity.dto.UpdateFormDto;
@@ -15,6 +17,7 @@ import com.feng.chat.exception.MyException;
 import com.feng.chat.mapper.ChatMsgMapper;
 import com.feng.chat.mapper.ChatUserMapper;
 import com.feng.chat.service.ChatUserService;
+import com.feng.chat.service.SysmsgService;
 import com.feng.chat.utils.TokenSecretUtil;
 import com.feng.chat.utils.UserContextUtil;
 import com.feng.chat.websocket.WebSocketChatServerHandler;
@@ -24,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -35,6 +39,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Service("chatUserService")
 public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> implements ChatUserService {
+    @Resource
+    private SysmsgService sysmsgService;
     @Resource
     private ChatUserMapper chatUserMapper;
     @Resource
@@ -127,6 +133,23 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
         if ( user == null ) return R.fail().setData("msg", "无法根据该chat号找到您要的好友!");
         user.setPassword("");
         return R.success().setData("friend", user).setData("msg", "查找成功!");
+    }
+
+    //{ "uid": uid, "username": username } uid和chat号
+    @Override // 发送好友申请
+    public R sendFriendInvite(Map<String, Object> invite) {
+        Long uid = Long.valueOf((String) invite.get("uid")); // 对方的uid
+        String username = (String) invite.get("username"); // chat号
+        // 1.插入数据库中
+        SysMsg sysMsg = SysMsg.builder()
+                .msgType(SysmsgType.FriendInvite.getSysmsgType()).sendUser(UserContextUtil.getUid())
+                .toUser(uid).isRead(false).build();
+        sysmsgService.save(sysMsg); // 先插入数据库
+
+        // 2.给对方发送过去，如果在线的话
+        webSocketChatServerHandler.sendSysMsgToUser(sysMsg);
+
+        return null;
     }
 }
 
