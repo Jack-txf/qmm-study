@@ -11,7 +11,7 @@
  Target Server Version : 80023
  File Encoding         : 65001
 
- Date: 12/11/2024 17:19:07
+ Date: 13/11/2024 17:02:06
 */
 
 SET NAMES utf8mb4;
@@ -46,7 +46,7 @@ CREATE TABLE `chat_relation`  (
   `create_time` datetime NULL DEFAULT NULL,
   `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`relation_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of chat_relation
@@ -87,7 +87,7 @@ CREATE TABLE `chat_user`  (
   `create_time` datetime NULL DEFAULT NULL,
   `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`uid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of chat_user
@@ -144,16 +144,17 @@ CREATE TABLE `sys_msg_tab`  (
   `msg_type` int NULL DEFAULT NULL COMMENT '0-好友申请    1-群聊加入申请     2-邀请别人加入群聊',
   `to_user` bigint NULL DEFAULT NULL COMMENT '消息接收者',
   `is_read` bit(1) NULL DEFAULT b'0' COMMENT '消息接收者是否阅读过了',
+  `is_accept` int NULL DEFAULT 0 COMMENT '消息接收者是否接受了 0-待处理  1-接受  2-拒绝',
   `create_time` datetime NULL DEFAULT NULL,
   `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`sysmsg_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_msg_tab
 -- ----------------------------
-INSERT INTO `sys_msg_tab` VALUES (1, 1, 0, 2, b'0', '2024-11-12 17:17:05', '2024-11-12 17:17:09');
-INSERT INTO `sys_msg_tab` VALUES (2, 6, 0, 2, b'0', '2024-11-12 17:17:26', NULL);
+INSERT INTO `sys_msg_tab` VALUES (1, 1, 0, 2, b'0', 0, '2024-11-12 17:17:05', '2024-11-12 17:17:09');
+INSERT INTO `sys_msg_tab` VALUES (2, 6, 0, 2, b'0', 0, '2024-11-12 17:17:26', NULL);
 
 -- ----------------------------
 -- Table structure for words_tab

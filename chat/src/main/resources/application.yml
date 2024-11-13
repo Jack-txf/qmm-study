@@ -39,6 +39,8 @@ spring:
         max-wait: -1ms
         min-idle: 0
         max-idle: 8
+      shutdown-timeout: 350 # 这个要大于redis配置的tcp-keepalive
+    timeout: 6000ms
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
   # token 名称（同时也是 cookie 名称）

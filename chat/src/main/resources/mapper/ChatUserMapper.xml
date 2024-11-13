@@ -44,5 +44,19 @@
         set password = #{password}
         where uid = #{uid}
     </update>
+
+    <!-- 判断两个人是不是好友关系 -->
+    <select id="judgeAlreadyFriend" parameterType="long" resultType="java.lang.Integer">
+        select count(*)
+        from (
+             select *
+             from chat_relation
+             where uid_auser = #{uid} and uid_buser = #{uid1}
+             union
+             select *
+             from chat_relation
+             where uid_auser = #{uid1} and uid_buser = #{uid}
+        ) as tmp
+    </select>
 </mapper>
 

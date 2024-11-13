@@ -8,4 +8,7 @@ import com.feng.chat.entity.SysMsg;
  * @CreateDate 2024/11/12
  */
 public interface SysmsgService extends IService<SysMsg> {
+    int judgeHasSendInvite(Long uid, Long uid1);
+
+
 }

@@ -12,8 +12,16 @@
             ON cu.uid = smt.send_user
         WHERE
             smt.is_read = 0
-          AND smt.to_user = 2
+          AND smt.to_user = #{toUser}
         order by smt.create_time desc
+    </select>
+
+    <select id="judgeHasSendInvite" parameterType="long" resultType="int">
+        select count(*)
+        from sys_msg_tab AS smt
+        where smt.send_user = #{uid}
+            and smt.to_user = #{uid1}
+            and smt.is_accept = 0
     </select>
 
 </mapper>

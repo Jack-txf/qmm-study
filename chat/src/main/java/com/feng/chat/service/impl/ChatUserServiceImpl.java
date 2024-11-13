@@ -3,8 +3,6 @@ package com.feng.chat.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
-import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.feng.chat.chatenum.SysmsgType;
 import com.feng.chat.common.R;
@@ -14,21 +12,17 @@ import com.feng.chat.entity.dto.FriendDto;
 import com.feng.chat.entity.dto.LoginUser;
 import com.feng.chat.entity.dto.UpdateFormDto;
 import com.feng.chat.exception.MyException;
-import com.feng.chat.mapper.ChatMsgMapper;
 import com.feng.chat.mapper.ChatUserMapper;
 import com.feng.chat.service.ChatUserService;
 import com.feng.chat.service.SysmsgService;
-import com.feng.chat.utils.TokenSecretUtil;
 import com.feng.chat.utils.UserContextUtil;
 import com.feng.chat.websocket.WebSocketChatServerHandler;
-import org.apache.catalina.User;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -59,6 +53,8 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
         redisTemplate.opsForValue().set(tokenValue, "userToken:" + user.getUid(), 60, TimeUnit.MINUTES);
 
         user.setPassword("");
+
+        // 登录成功了，要向这个推送一下消息 TODO
 
         return R.success()
                 .setData("userInfo", user)
@@ -134,14 +130,27 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
         if ( user == null ) return R.fail().setData("msg", "无法根据该chat号找到您要的好友!");
         if ( me.getUsername().equals(user.getUsername())) return R.fail().setData("msg", "你搜你自己干嘛!??");
         user.setPassword("");
-        return R.success().setData("friend", user).setData("msg", "查找成功!");
+
+        // 判断一下这俩人的状况
+        int sign = returnInviteSign(UserContextUtil.getUid(), user.getUid()); // 0不是好友   1已经是好友了   2发送了申请还未通过
+
+        return R.success().setData("friend", user).setData("msg", "查找成功!")
+                .setData("sign", sign);
     }
 
     //{ "uid": uid, "username": username } uid和chat号
     @Override // 发送好友申请
     public R sendFriendInvite(Map<String, Object> invite) {
         Long uid = Long.valueOf((String) invite.get("uid")); // 对方的uid
-        String username = (String) invite.get("username"); // chat号
+        // String username = (String) invite.get("username"); // chat号
+        // 判断一下这俩人的状况
+        int sign = returnInviteSign(UserContextUtil.getUid(), uid); // 0不是好友   1已经是好友了   2发送了申请还未通过
+        if ( sign != 0 ) {
+            return sign == 1 ?
+                    R.fail().setData("msg", "对方已经是您的好友") :
+                    R.fail().setData("msg", "您已经发送过好友申请了");
+        }
+
         // 1.插入数据库中
         SysMsg sysMsg = SysMsg.builder()
                 .msgType(SysmsgType.FriendInvite.getSysmsgType()).sendUser(UserContextUtil.getUid())
@@ -152,6 +161,20 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
         webSocketChatServerHandler.sendSysMsgToUser(sysMsg);
 
         return null;
+    }
+
+    private int returnInviteSign( Long uid, Long uid1 ) {
+        int sign = 0;
+        // 判断一下添加了好友没有
+        int c = chatUserMapper.judgeAlreadyFriend(uid, uid1); // 判断这俩人是不是好友关系
+        // 判断一下已经发送好友申请了没有
+        if ( c == 0 ) {
+            c = sysmsgService.judgeHasSendInvite(uid, uid1);
+            if ( c != 0 ) sign = 2;
+        } else {
+            sign = 1;
+        }
+        return sign;
     }
 }
 

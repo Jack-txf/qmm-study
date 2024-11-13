@@ -15,4 +15,6 @@ import java.util.List;
 @Mapper
 public interface SysmsgMapper extends BaseMapper<SysMsg> {
     List<UnReadSysMsgVo> selectNeedReadMsg(@Param("toUser") Long toUser);
+
+    int judgeHasSendInvite(@Param("uid") Long uid, @Param("uid1") Long uid1);
 }
