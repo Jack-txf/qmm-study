@@ -10,8 +10,8 @@ public class MessageUtil {
     }
 
     public static String unReadSysMsg(List<UnReadSysMsgVo> sysmsgs) {
-        // 构建未处理消息
-        Message message = new Message(MsgType.SYSTEM.getDescription(), sysmsgs); // 系统类型的消息
+        // 构建未处理消息徽章数
+        Message message = new Message(MsgType.SYSTEM_BADGE.getDescription(), sysmsgs.size()); // 系统类型的消息
         return message.toJsonMsg();
     }
 }

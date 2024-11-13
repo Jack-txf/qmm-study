@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum MsgType {
     FLUSHFRIEND("flushFriend"),
-    SYSTEM("system"),
+    SYSTEM_BADGE("system_badge"),
     FAIL("fail");
 
     private final String description;

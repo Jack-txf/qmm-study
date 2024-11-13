@@ -17,6 +17,7 @@ import com.feng.chat.service.ChatUserService;
 import com.feng.chat.service.SysmsgService;
 import com.feng.chat.utils.UserContextUtil;
 import com.feng.chat.websocket.WebSocketChatServerHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2024-07-31 20:35:31
  */
 @Service("chatUserService")
+@Slf4j
 public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> implements ChatUserService {
     @Resource
     private SysmsgService sysmsgService;
@@ -51,11 +53,7 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
         StpUtil.login(user.getUid());
         String tokenValue = StpUtil.getTokenValue();
         redisTemplate.opsForValue().set(tokenValue, "userToken:" + user.getUid(), 60, TimeUnit.MINUTES);
-
         user.setPassword("");
-
-        // 登录成功了，要向这个推送一下消息 TODO
-
         return R.success()
                 .setData("userInfo", user)
                 .setData("msg", "登录成功！")
@@ -141,8 +139,12 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
     //{ "uid": uid, "username": username } uid和chat号
     @Override // 发送好友申请
     public R sendFriendInvite(Map<String, Object> invite) {
-        Long uid = Long.valueOf((String) invite.get("uid")); // 对方的uid
+        log.info("发送好友申请的参数 {}", invite);
+        String uidStr = String.valueOf(invite.get("uid"));
+        Long uid = Long.valueOf(uidStr); // 对方的uid
         // String username = (String) invite.get("username"); // chat号
+        if (chatUserMapper.selectById(uid) == null) return R.fail().setData("msg", "该用户不存在!");
+
         // 判断一下这俩人的状况
         int sign = returnInviteSign(UserContextUtil.getUid(), uid); // 0不是好友   1已经是好友了   2发送了申请还未通过
         if ( sign != 0 ) {
@@ -150,17 +152,15 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
                     R.fail().setData("msg", "对方已经是您的好友") :
                     R.fail().setData("msg", "您已经发送过好友申请了");
         }
-
         // 1.插入数据库中
         SysMsg sysMsg = SysMsg.builder()
                 .msgType(SysmsgType.FriendInvite.getSysmsgType()).sendUser(UserContextUtil.getUid())
                 .toUser(uid).isRead(false).build();
         sysmsgService.save(sysMsg); // 先插入数据库
-
         // 2.给对方发送过去，如果在线的话
         webSocketChatServerHandler.sendSysMsgToUser(sysMsg);
 
-        return null;
+        return R.success().setData("msg", "好友申请成功！等待对方同意.");
     }
 
     private int returnInviteSign( Long uid, Long uid1 ) {

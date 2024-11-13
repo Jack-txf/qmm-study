@@ -75,9 +75,17 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
         } else {
             onlineSessions.put(uid, session); // 加入连接
             log.info(" 加入连接成功!【当前人数】：{}, ", onlineSessions.size());
+            // 发送一个刷新好友列表的消息
             Message msg = new Message(MsgType.FLUSHFRIEND.getDescription());
             msg.setContent(chatUserMapper.selectFriends(uid));
             session.sendMessage(new TextMessage(msg.toJsonMsg()));
+            // 再给该用户发送一条系统未读消息的个数
+            List<UnReadSysMsgVo> unReadSysMsgs = sysmsgMapper.selectNeedReadMsg(uid); // 查出未读消息
+            if ( unReadSysMsgs != null && !unReadSysMsgs.isEmpty()) {
+                Message msg2 = new Message(MsgType.SYSTEM_BADGE.getDescription());
+                msg2.setContent(unReadSysMsgs.size());
+                session.sendMessage(new TextMessage(msg2.toJsonMsg()));
+            }
         }
     }
 
@@ -107,7 +115,7 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
         log.info("【当前人数】：{}, ", onlineSessions.size());
     }
 
-    // 给用户发送系统消息
+    // 给用户发送系统消息未读数
     public void sendSysMsgToUser(SysMsg sysMsg) {
         Long toUser = sysMsg.getToUser(); // 给这个人发型消息
         Set<Long> uids = onlineSessions.keySet();
@@ -117,11 +125,13 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
                 WebSocketSession session = onlineSessions.get(toUser);
                 // 从数据库里面查出toUser的未读消息
                 List<UnReadSysMsgVo> sysmsgs = sysmsgMapper.selectNeedReadMsg(toUser);
-                try {
-                    session.sendMessage(new TextMessage(MessageUtil.unReadSysMsg(sysmsgs)));
-                } catch (IOException e) {
-                    log.info("发送消息出现了异常！{}", e.getMessage());
-                    e.printStackTrace();
+                if ( sysmsgs != null && !sysmsgs.isEmpty() ) {
+                    try {
+                        session.sendMessage(new TextMessage(MessageUtil.unReadSysMsg(sysmsgs)));
+                    } catch (IOException e) {
+                        log.info("发送消息出现了异常！{}", e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
             }
         }
