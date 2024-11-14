@@ -19,15 +19,14 @@
         SELECT nick, username, smt.create_time, msg_type, phone, to_user
         FROM
             chat_user AS cu
-                LEFT JOIN
+                INNER JOIN
             sys_msg_tab AS smt
             ON cu.uid = smt.send_user
-        limit
         WHERE
             smt.is_read = 0
-          AND smt.to_user = #{toUser}
+          AND smt.to_user = #{me}
         order by smt.create_time desc
-        limit #{page-1} * #{size}, #{size}
+        LIMIT #{size} OFFSET #{offsetVal}
     </select>
 
     <select id="judgeHasSendInvite" parameterType="long" resultType="int">

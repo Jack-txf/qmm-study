@@ -12,7 +12,7 @@ import java.util.List;
 public class ConvertUtil {
     public static List<UnReadSysMsgDTO> convertSysmsgToDTO(List<UnReadSysMsgVo> unReads) {
         ArrayList<UnReadSysMsgDTO> dtos = new ArrayList<>();
-        UnReadSysMsgVo sysMsg = null;
+        UnReadSysMsgVo sysMsg;
         for (int i = 0; i < unReads.size(); i++) {
             sysMsg = unReads.get(i);
             UnReadSysMsgDTO dto = new UnReadSysMsgDTO();
@@ -21,20 +21,18 @@ public class ConvertUtil {
             dto.setPhone(sysMsg.getPhone());
             dto.setCreateTime(sysMsg.getCreateTime());
             dto.setMsgType(sysMsg.getMsgType());
+            // 0-好友申请  1-加入群聊申请  2-邀请加入群聊
             if ( sysMsg.getMsgType() == 0 ) {
-                dto.setMsgContent( dto.getNick());
+                dto.setMsgContent( "【" + dto.getNick() + "】申请添加您为好友！");
             } else if ( sysMsg.getMsgType() == 1 ) {
-
+                dto.setMsgContent( "【"  + dto.getNick() + "】申请加入群聊！");
             } else {
-
+                dto.setMsgContent( "【"  + dto.getNick() + "】邀请您加入群聊！");
             }
-
             dto.setIsAccept(0);
             dto.setUsername(sysMsg.getUsername());
             dto.setSendUser(dto.getSendUser()); // 发送者id
             dto.setToUser(UserContextUtil.getUid());
-
-
 
             dtos.add(dto);
         }

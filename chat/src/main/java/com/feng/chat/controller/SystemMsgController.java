@@ -21,8 +21,9 @@ public class SystemMsgController {
     @Resource
     private SysmsgService sysmsgService;
 
+    // type:  0-未读消息   1-已读消息   2-好友申请(别人加我的)   3-群聊申请()
     @GetMapping("/getSysMsgs")
-    public R getMySysMsg(@RequestParam("page")Integer page, @RequestParam("size") Integer size) {
+    public R getMySysMsg(@RequestParam("page")Integer page, @RequestParam("size") Integer size, @RequestParam("type") Integer type) {
         List<UnReadSysMsgDTO> msgs = sysmsgService.getMySysMsgs(page, size);
         return R.success().setData("sysMsgs", msgs);
     }
