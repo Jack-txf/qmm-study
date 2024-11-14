@@ -2,14 +2,9 @@ package com.feng.chat.config.interceptor;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.feng.chat.exception.MyException;
-import com.feng.chat.utils.TokenSecretUtil;
 import com.feng.chat.utils.UserContextUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

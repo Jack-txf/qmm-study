@@ -46,6 +46,8 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
 
     @Override
     public R loginByUsernamePassword(LoginUser loginUser) {
+        if ( StpUtil.isLogin() ) throw new MyException("您的账号已在别的设备登录了!");
+
         ChatUser user = chatUserMapper.selectOne(new QueryWrapper<ChatUser>().eq("username", loginUser.getUsername()));
         if ( user == null ) throw new MyException("该账号不存在");
         if ( !user.getPassword().equals(loginUser.getPassword()) ) throw new MyException("账号密码不匹配");

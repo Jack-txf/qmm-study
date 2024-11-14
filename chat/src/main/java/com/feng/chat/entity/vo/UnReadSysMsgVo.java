@@ -10,6 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UnReadSysMsgVo {
+    private Long sysmsgId;
     private String nick;
     private String username;
     private Date createTime;

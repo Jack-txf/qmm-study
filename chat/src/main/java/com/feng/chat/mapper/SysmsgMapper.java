@@ -17,4 +17,6 @@ public interface SysmsgMapper extends BaseMapper<SysMsg> {
     List<UnReadSysMsgVo> selectNeedReadMsg(@Param("toUser") Long toUser);
 
     int judgeHasSendInvite(@Param("uid") Long uid, @Param("uid1") Long uid1);
+
+    List<UnReadSysMsgVo> selectNeedReadMsgByPage(@Param("me")Long me, @Param("page")int page, @Param("size")int size);
 }
