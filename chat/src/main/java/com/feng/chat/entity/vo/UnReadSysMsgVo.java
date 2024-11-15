@@ -17,4 +17,5 @@ public class UnReadSysMsgVo {
     private Integer msgType;
     private String phone;
     private Long toUser;
+    private Long sendUser;
 }

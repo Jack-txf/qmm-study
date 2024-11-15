@@ -16,15 +16,28 @@
         order by smt.create_time desc
     </select>
     <select id="selectNeedReadMsgByPage" resultType="com.feng.chat.entity.vo.UnReadSysMsgVo">
-        SELECT nick, username, smt.create_time, msg_type, phone, to_user
+        -- type:  0-未读消息   1-已读消息   2-好友申请(别人加我的)   3-群聊申请()
+        SELECT sysmsg_id, nick, username, smt.create_time, msg_type, phone,  send_user, to_user
         FROM
             chat_user AS cu
                 INNER JOIN
             sys_msg_tab AS smt
             ON cu.uid = smt.send_user
-        WHERE
-            smt.is_read = 0
-          AND smt.to_user = #{me}
+        <where>
+            <if test=" type == 0 ">
+                smt.is_read = 0
+            </if>
+            <if test=" type == 1 ">
+                smt.is_read = 1
+            </if>
+            <if test=" type == 2 ">
+                msg_type = 0
+            </if>
+            <if test=" type == 3 ">
+                msg_type = 1 or msg_type = 2
+            </if>
+            AND smt.to_user = #{me}
+        </where>
         order by smt.create_time desc
         LIMIT #{size} OFFSET #{offsetVal}
     </select>

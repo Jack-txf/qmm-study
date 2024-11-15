@@ -27,10 +27,10 @@ public class SysmsgServiceImpl extends ServiceImpl<SysmsgMapper, SysMsg> impleme
     }
 
     @Override
-    public List<UnReadSysMsgDTO> getMySysMsgs(int page, int size ) {
+    public List<UnReadSysMsgDTO> getMySysMsgs(int page, int size, int type ) {
         Long me = UserContextUtil.getUid();
         int offsetVal = (page-1) * size;
-        List<UnReadSysMsgVo> unReads = sysmsgMapper.selectNeedReadMsgByPage(me, size, offsetVal);
+        List<UnReadSysMsgVo> unReads = sysmsgMapper.selectNeedReadMsgByPage(me, size, offsetVal, type);
         if ( unReads == null || unReads.isEmpty()) return null;
         //转化为dto
         return ConvertUtil.convertSysmsgToDTO(unReads);

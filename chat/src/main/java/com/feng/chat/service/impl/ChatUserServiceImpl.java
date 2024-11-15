@@ -54,7 +54,13 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
         // sa-token -- 有效期在配置文件里面看得到
         StpUtil.login(user.getUid());
         String tokenValue = StpUtil.getTokenValue();
-        redisTemplate.opsForValue().set(tokenValue, "userToken:" + user.getUid(), 60, TimeUnit.MINUTES);
+        try {
+            redisTemplate.opsForValue().set(tokenValue, "userToken:" + user.getUid(), 60, TimeUnit.MINUTES);
+        } catch ( Exception e ) {
+            StpUtil.logout();
+            throw new MyException("服务器开了点儿小差!");
+        }
+
         user.setPassword("");
         return R.success()
                 .setData("userInfo", user)
@@ -165,6 +171,7 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
         return R.success().setData("msg", "好友申请成功！等待对方同意.");
     }
 
+    // 查看最新一条的系统消息 TODO
     private int returnInviteSign( Long uid, Long uid1 ) {
         int sign = 0;
         // 判断一下添加了好友没有
