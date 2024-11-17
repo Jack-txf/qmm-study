@@ -13,4 +13,6 @@ import java.util.List;
 public interface SysmsgService extends IService<SysMsg> {
     int judgeHasSendInvite(Long uid, Long uid1);
     List<UnReadSysMsgDTO> getMySysMsgs(int page, int size, int type);
+
+    boolean tackleMsg(Long sysmsgId, Integer isAccept);
 }

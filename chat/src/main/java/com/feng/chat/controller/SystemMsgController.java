@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Williams_Tian
@@ -27,7 +28,16 @@ public class SystemMsgController {
 
     // 消息处理 传的是消息的id，处理结果 1-接受 2-拒绝
     @PostMapping("/tackleMsg")
-    public R tackleMsg() {
+    public R tackleMsg(@RequestBody Map<String, Object> params) {
+        /*
+        {
+            "sysmsgId": xxx,
+            "isAccept": xxx
+        }
+         */
+        Long sysmsgId = (Long) params.get("sysmsgId");
+        Integer isAccept = (Integer) params.get("isAccept");
+        boolean res = sysmsgService.tackleMsg(sysmsgId, isAccept);
         return R.success();
     }
 }

@@ -35,4 +35,16 @@ public class SysmsgServiceImpl extends ServiceImpl<SysmsgMapper, SysMsg> impleme
         //转化为dto
         return ConvertUtil.convertSysmsgToDTO(unReads);
     }
+
+    // 用户处理消息
+    /*
+        1. 数据库里面修改一下
+        2. 消息类型
+            - 好友申请同意（给双方发送一个消息--刷新好友列表）
+            - 群聊加入申请统一 ( 待做 --)
+     */
+    @Override
+    public boolean tackleMsg(Long sysmsgId, Integer isAccept) {
+        return false;
+    }
 }
