@@ -35,9 +35,9 @@ public class SystemMsgController {
             "isAccept": xxx
         }
          */
-        Long sysmsgId = (Long) params.get("sysmsgId");
+        Long sysmsgId = Long.valueOf(params.get("sysmsgId").toString());
         Integer isAccept = (Integer) params.get("isAccept");
         boolean res = sysmsgService.tackleMsg(sysmsgId, isAccept);
-        return R.success();
+        return res ? R.success().setData("msg","操作成功！") : R.fail().setData("msg", "操作失败!");
     }
 }

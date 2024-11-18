@@ -2,9 +2,11 @@ package com.feng.chat.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.feng.chat.chatenum.SysmsgType;
+import com.feng.chat.entity.FriendRelation;
 import com.feng.chat.entity.SysMsg;
 import com.feng.chat.entity.dto.UnReadSysMsgDTO;
 import com.feng.chat.entity.vo.UnReadSysMsgVo;
+import com.feng.chat.mapper.FriendRelationMapper;
 import com.feng.chat.mapper.SysmsgMapper;
 import com.feng.chat.service.SysmsgService;
 import com.feng.chat.utils.ConvertUtil;
@@ -25,6 +27,8 @@ public class SysmsgServiceImpl extends ServiceImpl<SysmsgMapper, SysMsg> impleme
     private SysmsgMapper sysmsgMapper;
     @Resource
     private WebSocketChatServerHandler webSocketChatServerHandler;
+    @Resource
+    private FriendRelationMapper friendRelationMapper;
 
     @Override
     public int judgeHasSendInvite(Long uid, Long uid1) {
@@ -33,6 +37,7 @@ public class SysmsgServiceImpl extends ServiceImpl<SysmsgMapper, SysMsg> impleme
 
     @Override
     public List<UnReadSysMsgDTO> getMySysMsgs(int page, int size, int type ) {
+        System.out.println("【asdsads】:  " + type);
         Long me = UserContextUtil.getUid();
         int offsetVal = (page-1) * size;
         List<UnReadSysMsgVo> unReads = sysmsgMapper.selectNeedReadMsgByPage(me, size, offsetVal, type);
@@ -45,6 +50,7 @@ public class SysmsgServiceImpl extends ServiceImpl<SysmsgMapper, SysMsg> impleme
     /*
         1. 数据库里面修改一下
         2. 消息类型
+            - 消息徽章数减1
             - 好友申请同意（给双方发送一个消息--刷新好友列表）
             - 群聊加入申请统一 ( 待做 --)
      */
@@ -53,15 +59,19 @@ public class SysmsgServiceImpl extends ServiceImpl<SysmsgMapper, SysMsg> impleme
         // 1.先查出这条消息
         SysMsg sysMsg = sysmsgMapper.selectById(sysmsgId);
         // 2.更新为isAccept状态
-        this.lambdaUpdate().eq(SysMsg::getSysmsgId, sysmsgId).set(SysMsg::getIsAccept, isAccept);
-
+        boolean update = this.lambdaUpdate().eq(SysMsg::getSysmsgId, sysmsgId).set(SysMsg::getIsRead, 1)
+                .set(SysMsg::getIsAccept, isAccept).update();
         // 如果是好友申请的系统消息
         if ( sysMsg.getMsgType().equals(SysmsgType.FriendInvite.getSysmsgType())) {
+            // 如果是接受, 同意好友申请（插入好友关系表），拒绝就不用插入数据库表了
+            if ( isAccept.equals(1)) friendRelationMapper.insert(new FriendRelation(null, sysMsg.getSendUser(), sysMsg.getToUser(), null, null));
+
             List<Long> ids = Arrays.asList(sysMsg.getSendUser(), sysMsg.getToUser());
             // 给他们俩发消息--刷新好友列表
             webSocketChatServerHandler.sendSysMsgFlushFriends(ids);
+            // 给当前用户发送一个实时的消息未读徽章数
+            webSocketChatServerHandler.sendMsgBadge(UserContextUtil.getUid());
         }
-
-        return false;
+        return update;
     }
 }

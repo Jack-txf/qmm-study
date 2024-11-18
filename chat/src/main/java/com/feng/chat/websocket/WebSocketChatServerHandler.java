@@ -80,11 +80,23 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
             msg.setContent(chatUserMapper.selectFriends(uid));
             session.sendMessage(new TextMessage(msg.toJsonMsg()));
             // 再给该用户发送一条系统未读消息的个数
-            List<UnReadSysMsgVo> unReadSysMsgs = sysmsgMapper.selectNeedReadMsg(uid); // 查出未读消息
-            if ( unReadSysMsgs != null && !unReadSysMsgs.isEmpty()) {
-                Message msg2 = new Message(MsgType.SYSTEM_BADGE.getDescription());
-                msg2.setContent(unReadSysMsgs.size());
+            sendMsgBadge(uid);
+        }
+    }
+    public void sendMsgBadge( Long uid ) {
+        WebSocketSession session = onlineSessions.get(uid);
+        if ( session == null) return ;
+        // 再给该用户发送一条系统未读消息的个数
+        List<UnReadSysMsgVo> unReadSysMsgs = sysmsgMapper.selectNeedReadMsg(uid); // 查出未读消息
+        if ( unReadSysMsgs != null && !unReadSysMsgs.isEmpty()) {
+            Message msg2 = new Message(MsgType.SYSTEM_BADGE.getDescription());
+            msg2.setContent(unReadSysMsgs.size());
+            try {
                 session.sendMessage(new TextMessage(msg2.toJsonMsg()));
+            } catch (IOException e) {
+                log.info("发送消息出现了异常！{}", e.getMessage());
+                removeSession(session);
+                e.printStackTrace();
             }
         }
     }

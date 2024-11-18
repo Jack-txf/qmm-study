@@ -22,15 +22,19 @@
     <select id="selectFriends" resultType="com.feng.chat.entity.dto.FriendDto">
         select uid, nick
         from chat_user cu
-        where cu.uid in (
-            select uid_buser
-            from chat_relation
-            where uid_auser = #{uid}
-            union
-            select uid_auser
-            from chat_relation
-            where uid_buser = #{uid}
-        );
+        INNER JOIN
+             (
+                 SELECT uid_buser AS user_id, create_time
+                 FROM chat_relation
+                 WHERE uid_auser = #{uid}
+                 UNION
+                 SELECT uid_auser AS user_id, create_time
+                 FROM chat_relation
+                 WHERE uid_buser = #{uid}
+                 ORDER BY create_time DESC
+             ) as tmp
+             ON cu.uid = tmp.user_id
+        where cu.uid != #{uid}
     </select>
 
     <update id="updateNick">
