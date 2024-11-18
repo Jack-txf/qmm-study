@@ -115,26 +115,68 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
         log.info("【当前人数】：{}, ", onlineSessions.size());
     }
 
-    // 给用户发送系统消息未读数
+    // 给用户发送系统消息未读数【徽章数】
     public void sendSysMsgToUser(SysMsg sysMsg) {
         Long toUser = sysMsg.getToUser(); // 给这个人发型消息
-        Set<Long> uids = onlineSessions.keySet();
-        for (Long uid : uids) {
-            if ( toUser.equals(uid) ) { // 如果这个人在线
-                log.info("【添加好友的系统消息】{}  +  {}", sysMsg.getSendUser(), sysMsg.getToUser());
-                WebSocketSession session = onlineSessions.get(toUser);
-                // 从数据库里面查出toUser的未读消息
-                List<UnReadSysMsgVo> sysmsgs = sysmsgMapper.selectNeedReadMsg(toUser);
-                if ( sysmsgs != null && !sysmsgs.isEmpty() ) {
-                    try {
-                        session.sendMessage(new TextMessage(MessageUtil.unReadSysMsg(sysmsgs)));
-                    } catch (IOException e) {
-                        log.info("发送消息出现了异常！{}", e.getMessage());
-                        e.printStackTrace();
-                    }
+        WebSocketSession socketSession = onlineSessions.get(toUser);
+        if ( socketSession != null ) { // 如果这个人在线
+            log.info("【添加好友的系统消息】{}  +  {}", sysMsg.getSendUser(), sysMsg.getToUser());
+            WebSocketSession session = onlineSessions.get(toUser);
+            // 从数据库里面查出toUser的未读消息的数量
+            List<UnReadSysMsgVo> sysmsgs = sysmsgMapper.selectNeedReadMsg(toUser);
+            if ( sysmsgs != null && !sysmsgs.isEmpty() ) {
+                try {
+                    session.sendMessage(new TextMessage(MessageUtil.unReadSysMsg(sysmsgs)));
+                } catch (IOException e) {
+                    log.info("发送消息出现了异常！{}", e.getMessage());
+                    removeSession(socketSession);
+                    e.printStackTrace();
+                }
+            }
+        }
+        // Set<Long> uids = onlineSessions.keySet();
+        // for (Long uid : uids) {
+        //     if ( toUser.equals(uid) ) { // 如果这个人在线
+        //         log.info("【添加好友的系统消息】{}  +  {}", sysMsg.getSendUser(), sysMsg.getToUser());
+        //         WebSocketSession session = onlineSessions.get(toUser);
+        //         // 从数据库里面查出toUser的未读消息
+        //         List<UnReadSysMsgVo> sysmsgs = sysmsgMapper.selectNeedReadMsg(toUser);
+        //         if ( sysmsgs != null && !sysmsgs.isEmpty() ) {
+        //             try {
+        //                 session.sendMessage(new TextMessage(MessageUtil.unReadSysMsg(sysmsgs)));
+        //             } catch (IOException e) {
+        //                 log.info("发送消息出现了异常！{}", e.getMessage());
+        //                 e.printStackTrace();
+        //             }
+        //         }
+        //     }
+        // }
+    }
+
+    // 发送好友列表刷新的消息
+    public void sendSysMsgFlushFriends(List<Long> ids) {
+        for (int i = 0; i < ids.size(); i++) {
+            Long uid = ids.get(i);
+            WebSocketSession session = onlineSessions.get(uid);
+            if ( session != null) {
+                // 发送一个刷新好友列表的消息
+                Message msg = new Message(MsgType.FLUSHFRIEND.getDescription());
+                msg.setContent(chatUserMapper.selectFriends(uid));
+                try {
+                    session.sendMessage(new TextMessage(msg.toJsonMsg()));
+                } catch (IOException e) {
+                    log.info("【同意申请，发送flushFriends消息失败了】" + e.getMessage());
+                    removeSession(session);
                 }
             }
         }
     }
 
+    // 移除链接
+    private void removeSession(WebSocketSession session ) {
+        Collection<WebSocketSession> values = onlineSessions.values();
+        while( values.contains(session))
+            values.remove(session);
+        log.info("已经此连接 【当前人数】：{}, ", onlineSessions.size());
+    }
 }

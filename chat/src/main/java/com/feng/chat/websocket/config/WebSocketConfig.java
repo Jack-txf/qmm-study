@@ -27,5 +27,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
         registry.addHandler(webSocketHandler, "/txfChat")
                 .addInterceptors(new MyHandshakeInterceptor())
                 .setAllowedOrigins("*");
+                // .withSockJS();
     }
 }
