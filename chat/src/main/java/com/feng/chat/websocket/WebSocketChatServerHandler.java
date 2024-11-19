@@ -104,6 +104,7 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
         }
     }
 
+    // 处理用户发送过来的消息=================重点***********
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         InetSocketAddress address = session.getRemoteAddress();
@@ -149,23 +150,6 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
                 }
             }
         }
-        // Set<Long> uids = onlineSessions.keySet();
-        // for (Long uid : uids) {
-        //     if ( toUser.equals(uid) ) { // 如果这个人在线
-        //         log.info("【添加好友的系统消息】{}  +  {}", sysMsg.getSendUser(), sysMsg.getToUser());
-        //         WebSocketSession session = onlineSessions.get(toUser);
-        //         // 从数据库里面查出toUser的未读消息
-        //         List<UnReadSysMsgVo> sysmsgs = sysmsgMapper.selectNeedReadMsg(toUser);
-        //         if ( sysmsgs != null && !sysmsgs.isEmpty() ) {
-        //             try {
-        //                 session.sendMessage(new TextMessage(MessageUtil.unReadSysMsg(sysmsgs)));
-        //             } catch (IOException e) {
-        //                 log.info("发送消息出现了异常！{}", e.getMessage());
-        //                 e.printStackTrace();
-        //             }
-        //         }
-        //     }
-        // }
     }
 
     // 发送好友列表刷新的消息

@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum MsgType {
+    CHAT_MSG("chatMsg"),
     FLUSHFRIEND("flushFriend"),
     SYSTEM_BADGE("system_badge"),
     FAIL("fail");
