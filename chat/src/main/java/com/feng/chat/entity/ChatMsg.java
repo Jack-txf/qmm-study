@@ -4,6 +4,7 @@ package com.feng.chat.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,14 +24,16 @@ import java.util.Date;
 @TableName("chat_msg")
 public class ChatMsg {
 
-    @TableId(type = IdType.AUTO)
-    private String msgId;
+    @TableId(type = IdType.ASSIGN_ID) // 雪花算法
+    private String msgId; // 消息id
 
-    private Integer fromUser;
+    private Long fromUser;
 
-    private Integer toUser;
+    private Long toUser;
 
     private String msgDesc;
+
+    private Boolean isRead; // 阅读没有
 
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai") // 与数据库所处的时区要一致 ！！
