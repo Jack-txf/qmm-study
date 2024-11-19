@@ -17,7 +17,7 @@
     </select>
     <select id="selectNeedReadMsgByPage" resultType="com.feng.chat.entity.vo.UnReadSysMsgVo">
         -- type:  0-未读消息   1-已读消息   2-好友申请(别人加我的)   3-群聊申请()
-        SELECT sysmsg_id, nick, username, smt.create_time, msg_type, phone,  send_user, to_user
+        SELECT sysmsg_id, nick, username, smt.create_time, msg_type, is_accept ,phone,  send_user, to_user
         FROM
             chat_user AS cu
                 INNER JOIN

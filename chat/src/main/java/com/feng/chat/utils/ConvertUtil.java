@@ -29,7 +29,7 @@ public class ConvertUtil {
             } else {
                 dto.setMsgContent( "【"  + dto.getNick() + "】邀请您加入群聊！");
             }
-            dto.setIsAccept(0);
+            dto.setIsAccept(sysMsg.getIsAccept());
             dto.setUsername(sysMsg.getUsername());
             dto.setSendUser(dto.getSendUser()); // 发送者id
             dto.setToUser(UserContextUtil.getUid());

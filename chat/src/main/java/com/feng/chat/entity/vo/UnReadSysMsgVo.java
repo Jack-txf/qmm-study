@@ -15,6 +15,7 @@ public class UnReadSysMsgVo {
     private String username;
     private Date createTime;
     private Integer msgType;
+    private Integer isAccept;
     private String phone;
     private Long toUser;
     private Long sendUser;

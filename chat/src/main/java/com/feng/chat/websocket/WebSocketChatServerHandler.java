@@ -1,5 +1,6 @@
 package com.feng.chat.websocket;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.feng.chat.entity.SysMsg;
 import com.feng.chat.entity.vo.UnReadSysMsgVo;
 import com.feng.chat.mapper.ChatUserMapper;
@@ -87,17 +88,19 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
         WebSocketSession session = onlineSessions.get(uid);
         if ( session == null) return ;
         // 再给该用户发送一条系统未读消息的个数
-        List<UnReadSysMsgVo> unReadSysMsgs = sysmsgMapper.selectNeedReadMsg(uid); // 查出未读消息
-        if ( unReadSysMsgs != null && !unReadSysMsgs.isEmpty()) {
-            Message msg2 = new Message(MsgType.SYSTEM_BADGE.getDescription());
-            msg2.setContent(unReadSysMsgs.size());
-            try {
-                session.sendMessage(new TextMessage(msg2.toJsonMsg()));
-            } catch (IOException e) {
-                log.info("发送消息出现了异常！{}", e.getMessage());
-                removeSession(session);
-                e.printStackTrace();
-            }
+        // List<UnReadSysMsgVo> unReadSysMsgs = sysmsgMapper.selectNeedReadMsg(uid); // 查出未读消息
+        QueryWrapper<SysMsg> wrapper = new QueryWrapper<>();
+        Integer counts = sysmsgMapper.selectCount(wrapper.eq("is_read", 0).eq("to_user", uid));
+        if( counts == null ) return ;
+
+        Message msg2 = new Message(MsgType.SYSTEM_BADGE.getDescription());
+        msg2.setContent(counts);
+        try {
+            session.sendMessage(new TextMessage(msg2.toJsonMsg()));
+        } catch (IOException e) {
+            log.info("发送消息出现了异常！{}", e.getMessage());
+            removeSession(session);
+            e.printStackTrace();
         }
     }
 
