@@ -18,5 +18,26 @@
         </foreach>
     </insert>
 
+    <!--查询历史部分聊天记录（切换聊天对象的时候用, 10条吧先）-->
+    <select id="selectHistorySegment" resultType="com.feng.chat.entity.ChatMsg">
+        SELECT *
+        FROM (
+             SELECT *
+             from chat_msg as cm
+             WHERE
+                 cm.from_user = #{me} AND
+                 cm.to_user = #{uid}
+             UNION
+             SELECT *
+             from chat_msg as cm
+             WHERE
+                 cm.from_user = #{uid} AND
+                 cm.to_user = #{me}
+
+         ) AS tmp
+        ORDER BY tmp.create_time DESC
+        LIMIT 10
+    </select>
+
 </mapper>
 

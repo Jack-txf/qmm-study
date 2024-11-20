@@ -2,15 +2,20 @@ package com.feng.chat.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.feng.chat.common.R;
+import com.feng.chat.entity.dto.HistoryMsgSegmentDto;
 import com.feng.chat.entity.dto.NormalMsgDto;
 import com.feng.chat.mapper.ChatMsgMapper;
 import com.feng.chat.entity.ChatMsg;
 import com.feng.chat.service.ChatMsgService;
 import com.feng.chat.utils.ConvertUtil;
+import com.feng.chat.utils.UserContextUtil;
 import com.feng.chat.websocket.WebSocketChatServerHandler;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * (ChatMsg)表服务实现类
@@ -32,15 +37,23 @@ public class ChatMsgServiceImpl extends ServiceImpl<ChatMsgMapper, ChatMsg> impl
     // @Resource
     // private WebSocketChatServerHandler webSocketChatServerHandler;
 
+    // @Override
+    // public Boolean sendNormalMsg(NormalMsgDto normalMsgDto) {
+    //     // 直接插入数据库
+    //     ChatMsg chatMsg = ConvertUtil.convertNormalMsgToChatMsg(normalMsgDto);
+    //     int insert = chatMsgMapper.insert(chatMsg);
+    //     // if ( insert > 0 ) { // 给toUser发送一条消息
+    //     //     webSocketChatServerHandler.sendChatMsgToOne(chatMsg);
+    //     // }
+    //     return insert > 0;
+    // }
+
     @Override
-    public Boolean sendNormalMsg(NormalMsgDto normalMsgDto) {
-        // 直接插入数据库
-        ChatMsg chatMsg = ConvertUtil.convertNormalMsgToChatMsg(normalMsgDto);
-        int insert = chatMsgMapper.insert(chatMsg);
-        // if ( insert > 0 ) { // 给toUser发送一条消息
-        //     webSocketChatServerHandler.sendChatMsgToOne(chatMsg);
-        // }
-        return insert > 0;
+    public List<HistoryMsgSegmentDto> getHistorySegment(Long uid) {
+        Long me = UserContextUtil.getUid();
+        List<ChatMsg> msgs = chatMsgMapper.selectHistorySegment(me, uid); // 要把这个逆序一下
+        Collections.reverse(msgs); //
+        return ConvertUtil.convertSegToDto(msgs);
     }
 }
 

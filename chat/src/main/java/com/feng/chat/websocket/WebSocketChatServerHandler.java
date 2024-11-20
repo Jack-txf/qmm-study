@@ -213,20 +213,4 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
             values.remove(session);
         log.info("已经此连接 【当前人数】：{}, ", onlineSessions.size());
     }
-
-    // 给toUser发送一条消息
-    // public void sendChatMsgToOne(ChatMsg chatMsg) {
-    //     Long toUser = chatMsg.getToUser();
-    //     WebSocketSession session = onlineSessions.get(toUser);
-    //     if ( session != null ) { // 如果在线
-    //         // 构建一条chatMsg类型的消息
-    //         try {
-    //             session.sendMessage(new TextMessage(MessageUtil.chatMsg(chatMsg)));
-    //         } catch (IOException e) {
-    //             log.info("【发送chatMsg消息失败了】" + e.getMessage());
-    //             log.info("【消息内容】: {}", chatMsg);
-    //             removeSession(session);
-    //         }
-    //     }
-    // }
 }

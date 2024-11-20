@@ -1,6 +1,7 @@
 package com.feng.chat.utils;
 
 import com.feng.chat.entity.ChatMsg;
+import com.feng.chat.entity.dto.HistoryMsgSegmentDto;
 import com.feng.chat.entity.dto.NormalMsgDto;
 import com.feng.chat.entity.dto.UnReadSysMsgDTO;
 import com.feng.chat.entity.vo.UnReadSysMsgVo;
@@ -48,5 +49,14 @@ public class ConvertUtil {
         chatMsg.setMsgDesc(normalMsgDto.getMsgDesc());
         chatMsg.setIsRead(false);
         return chatMsg;
+    }
+
+    public static List<HistoryMsgSegmentDto> convertSegToDto(List<ChatMsg> msgs) {
+        ArrayList<HistoryMsgSegmentDto> msgs1 = new ArrayList<>();
+        for (int i = 0; i < msgs.size(); i++) {
+            ChatMsg msg = msgs.get(i);
+            msgs1.add(new HistoryMsgSegmentDto(msg.getFromUser(), msg.getToUser(), msg.getMsgDesc(), msg.getCreateTime()));
+        }
+        return msgs1;
     }
 }

@@ -22,5 +22,7 @@ public interface ChatMsgMapper extends BaseMapper<ChatMsg> {
     * @return 影响行数
     */
     int insertBatch(@Param("entities") List<ChatMsg> entities);
+
+    List<ChatMsg> selectHistorySegment(@Param("me") Long me, @Param("uid") Long uid);
 }
 

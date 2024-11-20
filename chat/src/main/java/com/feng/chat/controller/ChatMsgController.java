@@ -2,11 +2,14 @@ package com.feng.chat.controller;
 
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.feng.chat.common.R;
+import com.feng.chat.entity.dto.HistoryMsgSegmentDto;
 import com.feng.chat.entity.dto.NormalMsgDto;
 import com.feng.chat.service.ChatMsgService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.List;
+
 /**
  * (ChatMsg)表控制层
  *
@@ -28,26 +31,26 @@ public class ChatMsgController extends ApiController {
     /*
     1. 发送普通消息
      */
-    @PostMapping("/sendNormalMsg")
-    public R sendNormalMsg(@RequestBody @Validated NormalMsgDto normalMsgDto ) {
-        Boolean res = chatMsgService.sendNormalMsg(normalMsgDto);
-        return res ? R.success() : R.fail().setData("msg", "服务器开了点儿小差!");
-    }
-
+    // @PostMapping("/sendNormalMsg")
+    // public R sendNormalMsg(@RequestBody @Validated NormalMsgDto normalMsgDto ) {
+    //     Boolean res = chatMsgService.sendNormalMsg(normalMsgDto);
+    //     return res ? R.success() : R.fail().setData("msg", "服务器开了点儿小差!");
+    // }
     /*
     2. 发送群聊消息
      */
-    @PostMapping("/sendGroupMsg")
-    public R sendGroupMsg(@RequestBody NormalMsgDto normalMsgDto ) {
-        return R.success();
-    }
+    // @PostMapping("/sendGroupMsg")
+    // public R sendGroupMsg(@RequestBody NormalMsgDto normalMsgDto ) {
+    //     return R.success();
+    // }
 
     /*
     3. 查询部分历史消息(用于切换聊天对象的时候用的)
      */
-    @GetMapping("/getHistorySegment")
-    public R getHistorySegment() {
-        return R.success();
+    @GetMapping("/getHistorySegment/{uid}")
+    public R getHistorySegment(@PathVariable("uid") Long uid) {
+        List<HistoryMsgSegmentDto> historyList = chatMsgService.getHistorySegment(uid);
+        return R.success().setData("messages", historyList);
     }
 
     /*
