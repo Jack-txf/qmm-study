@@ -31,5 +31,7 @@ public interface ChatUserMapper extends BaseMapper<ChatUser> {
     void updatePwd(@Param("uid") Long uid, @Param("password") String password);
 
     int judgeAlreadyFriend(@Param("uid") Long uid, @Param("uid1") Long uid1);
+
+    Long selectUid(@Param("fromUsername") String fromUsername);
 }
 

@@ -1,5 +1,7 @@
 package com.feng.chat.utils;
 
+import com.feng.chat.entity.ChatMsg;
+import com.feng.chat.entity.dto.NormalMsgDto;
 import com.feng.chat.entity.dto.UnReadSysMsgDTO;
 import com.feng.chat.entity.vo.UnReadSysMsgVo;
 import java.util.ArrayList;
@@ -37,5 +39,14 @@ public class ConvertUtil {
             dtos.add(dto);
         }
         return dtos;
+    }
+
+    public static ChatMsg convertNormalMsgToChatMsg(NormalMsgDto normalMsgDto) {
+        ChatMsg chatMsg = new ChatMsg();
+        chatMsg.setFromUser(normalMsgDto.getFromUser());
+        chatMsg.setToUser(normalMsgDto.getToUser());
+        chatMsg.setMsgDesc(normalMsgDto.getMsgDesc());
+        chatMsg.setIsRead(false);
+        return chatMsg;
     }
 }

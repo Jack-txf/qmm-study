@@ -1,10 +1,18 @@
 package com.feng.chat.websocket;
 
+import cn.hutool.json.JSONConverter;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.feng.chat.entity.ChatMsg;
 import com.feng.chat.entity.SysMsg;
+import com.feng.chat.entity.dto.NormalMsgDto;
 import com.feng.chat.entity.vo.UnReadSysMsgVo;
+import com.feng.chat.mapper.ChatMsgMapper;
 import com.feng.chat.mapper.ChatUserMapper;
 import com.feng.chat.mapper.SysmsgMapper;
+import com.feng.chat.utils.ConvertUtil;
+import com.feng.chat.websocket.message.ClientSendMsg;
 import com.feng.chat.websocket.message.Message;
 import com.feng.chat.websocket.message.MessageUtil;
 import com.feng.chat.websocket.message.MsgType;
@@ -21,7 +29,6 @@ import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 // 比较原始的方法
@@ -32,6 +39,8 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
     private ChatUserMapper chatUserMapper;
     @Resource
     private SysmsgMapper sysmsgMapper;
+    @Resource
+    private ChatMsgMapper chatMsgMapper;
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate; // redis来判断token吧
@@ -107,10 +116,36 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
     // 处理用户发送过来的消息=================重点***********
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        InetSocketAddress address = session.getRemoteAddress();
-        assert address != null;
-        System.out.println(address.getHostName());
-        System.out.println(message.getPayload());
+        String payload = message.getPayload();
+        ClientSendMsg clientSendMsg = JSONUtil.toBean(payload, ClientSendMsg.class);
+        String type = clientSendMsg.getType();
+        if ( type.equals("chatMsg") ) { // 说明是单人对单人的聊天消息
+            sendToOne(clientSendMsg);
+        } else if ( type.equals("chatGroup") ) { // 说明是群聊的聊天消息
+
+        } else {
+            log.info("【客户端发送的未知的消息类型】: {}", payload);
+        }
+    }
+
+    private void sendToOne(ClientSendMsg clientSendMsg) {
+        String fromUsername = clientSendMsg.getUsername();
+        Long fromUser = chatUserMapper.selectUid(fromUsername);
+        // 直接插入数据库
+        ChatMsg chatMsg = ConvertUtil.convertNormalMsgToChatMsg(new NormalMsgDto(fromUser, clientSendMsg.getToUser(), clientSendMsg.getContent()));
+        int insert = chatMsgMapper.insert(chatMsg);
+        if ( insert > 0 ) { // 给toUser发送一条消息
+            WebSocketSession session = onlineSessions.get(clientSendMsg.getToUser());
+            if ( session == null ) return ;
+            // 构建一条chatMsg类型的消息
+            try {
+                session.sendMessage(new TextMessage(MessageUtil.chatMsg(chatMsg)));
+            } catch (IOException e) {
+                log.info("【发送chatMsg消息失败了】" + e.getMessage());
+                log.info("【消息内容】: {}", chatMsg);
+                removeSession(session);
+            }
+        }
     }
 
     // 连接关闭后可进行的操作
@@ -178,4 +213,20 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
             values.remove(session);
         log.info("已经此连接 【当前人数】：{}, ", onlineSessions.size());
     }
+
+    // 给toUser发送一条消息
+    // public void sendChatMsgToOne(ChatMsg chatMsg) {
+    //     Long toUser = chatMsg.getToUser();
+    //     WebSocketSession session = onlineSessions.get(toUser);
+    //     if ( session != null ) { // 如果在线
+    //         // 构建一条chatMsg类型的消息
+    //         try {
+    //             session.sendMessage(new TextMessage(MessageUtil.chatMsg(chatMsg)));
+    //         } catch (IOException e) {
+    //             log.info("【发送chatMsg消息失败了】" + e.getMessage());
+    //             log.info("【消息内容】: {}", chatMsg);
+    //             removeSession(session);
+    //         }
+    //     }
+    // }
 }

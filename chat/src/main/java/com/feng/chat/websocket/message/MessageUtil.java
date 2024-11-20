@@ -1,5 +1,6 @@
 package com.feng.chat.websocket.message;
 
+import com.feng.chat.entity.ChatMsg;
 import com.feng.chat.entity.vo.UnReadSysMsgVo;
 
 import java.util.List;
@@ -12,6 +13,13 @@ public class MessageUtil {
     public static String unReadSysMsg(List<UnReadSysMsgVo> sysmsgs) {
         // 构建未处理消息徽章数
         Message message = new Message(MsgType.SYSTEM_BADGE.getDescription(), sysmsgs.size()); // 系统类型的消息
+        return message.toJsonMsg();
+    }
+
+    // 站在消息接收者来看，他需要知道from哪儿，msg内容是啥
+    public static String chatMsg(ChatMsg chatMsg) {
+        ChatMsgVo chatMsgVo = new ChatMsgVo(chatMsg.getFromUser(), chatMsg.getMsgDesc());
+        Message message = new Message(MsgType.CHAT_MSG.getDescription(), chatMsgVo);
         return message.toJsonMsg();
     }
 }

@@ -62,5 +62,11 @@
              where uid_auser = #{uid1} and uid_buser = #{uid}
         ) as tmp
     </select>
+
+    <select id="selectUid" resultType="long" parameterType="string">
+        select uid
+        from chat_user
+        where username = #{fromUsername}
+    </select>
 </mapper>
 
