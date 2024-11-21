@@ -10,4 +10,12 @@ public class TaskDelayQueue {
         if ( offer ) System.out.println("【添加任务成功】 " + task);
         else System.out.println("【添加任务 失败!】 " + task);
     }
+
+    public static boolean isEmpty() {
+        return delayQueue.isEmpty();
+    }
+
+    public static Task getTop() throws InterruptedException {
+        return delayQueue.take(); // 要用take哦！！！！！！！！！！！
+    }
 }
