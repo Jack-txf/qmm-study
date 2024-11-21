@@ -23,6 +23,7 @@
         <module>algorithm</module>
         <module>async-study/aqs</module>
         <module>async-study/delay-queue</module>
+        <module>judge-machine</module>
     </modules>
 
     <properties>
