@@ -2,6 +2,7 @@ package com.feng.chat.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.feng.chat.common.R;
+import com.feng.chat.entity.dto.HistoryMsgDto;
 import com.feng.chat.entity.dto.HistoryMsgSegmentDto;
 import com.feng.chat.entity.dto.NormalMsgDto;
 import com.feng.chat.mapper.ChatMsgMapper;
@@ -52,8 +53,23 @@ public class ChatMsgServiceImpl extends ServiceImpl<ChatMsgMapper, ChatMsg> impl
     public List<HistoryMsgSegmentDto> getHistorySegment(Long uid) {
         Long me = UserContextUtil.getUid();
         List<ChatMsg> msgs = chatMsgMapper.selectHistorySegment(me, uid); // 要把这个逆序一下
-        Collections.reverse(msgs); //
-        return ConvertUtil.convertSegToDto(msgs);
+        if ( msgs != null && !msgs.isEmpty()) {
+            Collections.reverse(msgs); //
+            return ConvertUtil.convertSegToDto(msgs);
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<HistoryMsgDto> getHistoryPage(Long uid, Integer page, Integer pageSize) {
+        int offset = (page - 1) * pageSize;
+        Long me = UserContextUtil.getUid();
+        List<HistoryMsgDto> page1 = chatMsgMapper.getHistoryPage(me, uid, pageSize, offset);
+        if ( page1 != null && !page1.isEmpty()) {
+            Collections.reverse(page1); //
+            return page1;
+        }
+        return Collections.emptyList();
     }
 }
 

@@ -39,5 +39,27 @@
         LIMIT 10
     </select>
 
+    <select id="getHistoryPage" resultType="com.feng.chat.entity.dto.HistoryMsgDto">
+        SELECT from_user, nick as fromNick, to_user, msg_desc, tmp.create_time
+        FROM
+            (
+                SELECT *
+                from chat_msg as cm
+                WHERE
+                    cm.from_user = #{me} AND
+                    cm.to_user = #{uid}
+                UNION
+                SELECT *
+                from chat_msg as cm
+                WHERE
+                    cm.from_user = #{uid} AND
+                    cm.to_user = #{me}
+            ) AS tmp
+            INNER JOIN chat_user
+            on tmp.from_user = chat_user.uid
+        ORDER BY tmp.create_time desc
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
 </mapper>
 

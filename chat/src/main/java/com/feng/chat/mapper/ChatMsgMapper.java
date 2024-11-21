@@ -3,6 +3,7 @@ package com.feng.chat.mapper;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.feng.chat.entity.dto.HistoryMsgDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.feng.chat.entity.ChatMsg;
@@ -24,5 +25,7 @@ public interface ChatMsgMapper extends BaseMapper<ChatMsg> {
     int insertBatch(@Param("entities") List<ChatMsg> entities);
 
     List<ChatMsg> selectHistorySegment(@Param("me") Long me, @Param("uid") Long uid);
+
+    List<HistoryMsgDto> getHistoryPage(@Param("uid") Long uid, @Param("me") Long me ,@Param("pageSize") Integer pageSize, @Param("offset") int offset);
 }
 

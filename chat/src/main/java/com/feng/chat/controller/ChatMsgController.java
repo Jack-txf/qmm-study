@@ -2,6 +2,7 @@ package com.feng.chat.controller;
 
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.feng.chat.common.R;
+import com.feng.chat.entity.dto.HistoryMsgDto;
 import com.feng.chat.entity.dto.HistoryMsgSegmentDto;
 import com.feng.chat.service.ChatMsgService;
 import org.springframework.web.bind.annotation.*;
@@ -55,8 +56,9 @@ public class ChatMsgController extends ApiController {
     4. 查询与该对象的所有历史消息（分页查询）
      */
     @GetMapping("/getHistoryPage")
-    public R getHistoryPage() {
-        return R.success();
+    public R getHistoryPage(@RequestParam("uid")Long uid,@RequestParam("page")Integer page, @RequestParam("pageSize") Integer pageSize) {
+        List<HistoryMsgDto> messages = chatMsgService.getHistoryPage(uid, page, pageSize);
+        return R.success().setData("messages", messages);
     }
 
 }
