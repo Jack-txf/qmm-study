@@ -45,6 +45,14 @@ public class Math {
         //    System.out.println(test.get(key));
         //}
 
-        System.out.println(Long.MAX_VALUE / 1000000);
+        // System.out.println(Long.MAX_VALUE / 1000000);
+        StringBuilder str = new StringBuilder("IEEE Transactions on Network Science and Engineering");
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if ( c >= 'a' && c <= 'z') {
+                str.setCharAt(i, (char)(c - 32));
+            }
+        }
+        System.out.println(str);
     }
 }

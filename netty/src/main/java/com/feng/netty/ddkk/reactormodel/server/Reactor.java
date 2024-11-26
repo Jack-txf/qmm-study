@@ -1,4 +1,4 @@
-package com.feng.netty.ddkk.reactormodel;
+package com.feng.netty.ddkk.reactormodel.server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -38,7 +38,7 @@ public class Reactor implements Runnable {
 				Iterator<SelectionKey> it = selected.iterator();
 				while (it.hasNext()) {
 					// 这里进行任务分发
-					dispatch((SelectionKey) (it.next()));
+					dispatch(it.next());
 				}
 				selected.clear();
 			}
