@@ -7,6 +7,8 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.concurrent.TimeUnit;
@@ -24,6 +26,10 @@ public class Server {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
+                            // 向 pipeline 加入一个解码器
+                            pipeline.addLast("decoder", new StringDecoder());
+                            // 向 pipeline 加入一个编码器
+                            pipeline.addLast("encoder", new StringEncoder());
                             pipeline.addLast(new IdleStateHandler(10, 20, 60, TimeUnit.SECONDS));
                             pipeline.addLast(new ServerHandler());
                         }

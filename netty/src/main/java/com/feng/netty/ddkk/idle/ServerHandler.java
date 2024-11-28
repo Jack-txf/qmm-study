@@ -6,6 +6,11 @@ import io.netty.handler.timeout.IdleStateEvent;
 
 public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("接收到来自客户端的消息:" + msg);
+    }
+
+    @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if(evt instanceof IdleStateEvent){
             // 将 evt 向下转型
@@ -25,6 +30,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
             System.out.println(ctx.channel().remoteAddress() + "--超时事件发生-->" + eventType);
             System.out.println("服务器做相应处理......");
+            ctx.writeAndFlush(eventType);
         }
     }
 }
