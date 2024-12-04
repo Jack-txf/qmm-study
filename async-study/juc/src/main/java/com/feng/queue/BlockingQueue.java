@@ -1,4 +1,4 @@
-package com.feng.base;
+package com.feng.queue;
 
 import java.util.LinkedList;
 import java.util.List;
