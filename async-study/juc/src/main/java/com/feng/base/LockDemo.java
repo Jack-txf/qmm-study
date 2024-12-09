@@ -1,5 +1,7 @@
 package com.feng.base;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 
@@ -15,7 +17,12 @@ import java.util.concurrent.locks.ReadWriteLock;
  */
 public class LockDemo {
     public static void main(String[] args) {
+        Date date = new Date();
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(date);
+        instance.add(Calendar.HOUR_OF_DAY, -16);
 
+        System.out.println(instance.getTime());
     }
 
     /*
