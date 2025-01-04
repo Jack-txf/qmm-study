@@ -44,6 +44,11 @@
             <version>5.1.1</version>
         </dependency>
 
+        <!-- <dependency> -->
+        <!--     <groupId>com.feng.test</groupId> -->
+        <!--     <artifactId>test-demo</artifactId> -->
+        <!--     <version>1.0-SNAPSHOT</version> -->
+        <!-- </dependency> -->
     </dependencies>
 
     <dependencyManagement>
