@@ -1,0 +1,3 @@
+org.springframework.boot.BootstrapRegistryInitializer=com.feng.tackle.config.source.MyBootstrapInit
+org.springframework.context.ApplicationContextInitializer=com.feng.tackle.config.source.MyApplicationContextInit
+org.springframework.context.ApplicationListener=com.feng.tackle.config.source.MyContextListener
