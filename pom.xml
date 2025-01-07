@@ -24,6 +24,7 @@
         <module>async-study/aqs</module>
         <module>async-study/delay-queue</module>
         <module>judge-machine</module>
+        <module>reslove-mq</module>
     </modules>
 
     <properties>
