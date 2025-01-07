@@ -1,0 +1,13 @@
+server:
+  port: 8900
+spring:
+  application:
+    name: rocketmq-resolve
+
+# rocketmq的配置
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: producer-group01
+  consumer:
+    group: consumer-group01
