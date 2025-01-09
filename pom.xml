@@ -25,6 +25,7 @@
         <module>async-study/delay-queue</module>
         <module>judge-machine</module>
         <module>reslove-mq</module>
+        <module>blog</module>
     </modules>
 
     <properties>

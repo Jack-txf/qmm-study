@@ -1,0 +1,14 @@
+server:
+  port: 8050
+
+spring:
+  application:
+    name: open-club-blog
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/open_club_db?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=true
+    username: root
+    password: TXFtxf1121512752
+#Mapper文件的位置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
