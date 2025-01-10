@@ -1,6 +1,7 @@
 package com.feng.blog.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.feng.blog.dto.ArticleDto;
 import com.feng.blog.model.Article;
 
 /**
@@ -11,5 +12,8 @@ import com.feng.blog.model.Article;
  */
 public interface ArticleService extends IService<Article> {
 
+    void addBlog(ArticleDto articleDto);
+
+    Article getArticleRandomOne(Long articleId);
 }
 
