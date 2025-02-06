@@ -2,6 +2,7 @@ package com.feng.compare;
 
 import com.feng.compare.obj.DayTotal;
 import com.feng.compare.obj.ExcelData;
+import com.feng.compare.obj.Pair;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,26 +23,29 @@ public class Reslover {
 
     private static void thirdStep(List<ExcelData> list) {
         String max = "0000-00-00", min = "9999-99-99";
-        HashMap<String, Integer> map = new HashMap<>();
+        HashMap<String, Pair> map = new HashMap<>();
         for (ExcelData data : list) {
             if (data.getDayTime().compareTo(max) > 0) max = data.getDayTime();
             if (data.getDayTime().compareTo(min) < 0) min = data.getDayTime();
             //
             if (map.containsKey(data.getName())) {
-                map.put(data.getName(), map.get(data.getName()) + 1);
+                Pair pair = map.get(data.getName());
+                pair.addNums(1);
+                pair.addMayang(data.getMayang());
+                map.put(data.getName(), pair);
             } else {
-                map.put(data.getName(), 1);
+                map.put(data.getName(), new Pair(1, data.getMayang()));
             }
         }
         // 显示一下
         System.out.println("############" + min + " ~ " + max + "#############");
         int i = 1;
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            if ( entry.getValue() >= 150 )  {
-                System.out.print("\t" + entry.getKey() + " : " + entry.getValue() + " \t");
-                if (i++ % 2 == 0) {
-                    System.out.println();
-                }
+        for (Map.Entry<String, Pair> entry : map.entrySet()) {
+            if ( entry.getValue().getNums() >= 150 )  {
+                System.out.println("\t" + entry.getKey() + " : " + entry.getValue().getNums() + ": ("+ entry.getValue().getMayang() + ")\t");
+                //if (i++ % 2 == 0) {
+                //    System.out.println();
+                //}
             }
         }
         System.out.println("\n##################################");
