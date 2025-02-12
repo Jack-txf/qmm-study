@@ -8,8 +8,12 @@ import java.util.List;
 
 public class App {
     public static void main(String[] args) {
-        String path = "E:\\a_报表\\销售对比\\一个月的对比\\24春节-腊月二十-正月初六6销售.xlsx";
+        //String path = "E:\\a_报表\\销售对比\\一个月的对比\\24春节-腊月二十-正月初六6销售.xlsx";
         //String path = "E:\\a_报表\\销售对比\\一个月的对比\\25春节-腊月二十-正月初八8销售.xlsx";
+
+        // 三个月的对比
+        //String path = "E:\\a_报表\\销售对比\\24-23-3个月对比\\23年10月-12月.xlsx";
+        String path = "E:\\a_报表\\销售对比\\24-23-3个月对比\\24年10月-12月.xlsx";
         DataListener listener = new DataListener();
         // 调用 EasyExcel 的 read 方法进行读取
         EasyExcel.read(new File(path), ExcelData.class, listener).sheet().doRead();

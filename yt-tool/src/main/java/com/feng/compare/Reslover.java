@@ -4,6 +4,8 @@ import com.feng.compare.obj.DayTotal;
 import com.feng.compare.obj.ExcelData;
 import com.feng.compare.obj.Pair;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +44,8 @@ public class Reslover {
         int i = 1;
         for (Map.Entry<String, Pair> entry : map.entrySet()) {
             if ( entry.getValue().getNums() >= 150 )  {
-                System.out.println("\t" + entry.getKey() + " : " + entry.getValue().getNums() + ": ("+ entry.getValue().getMayang() + ")\t");
+                System.out.println("\t" + entry.getKey() + " : " + entry.getValue().getNums() +
+                        ": ("+ entry.getValue().getMayang() + ") : 均价："+ BigDecimal.valueOf(entry.getValue().getMayang().doubleValue() / entry.getValue().getNums()).setScale(2, RoundingMode.HALF_UP) +"\t");
                 //if (i++ % 2 == 0) {
                 //    System.out.println();
                 //}
