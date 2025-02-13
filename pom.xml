@@ -26,6 +26,7 @@
         <module>judge-machine</module>
         <module>reslove-mq</module>
         <module>blog</module>
+        <module>protocol-demo</module>
     </modules>
 
     <properties>
