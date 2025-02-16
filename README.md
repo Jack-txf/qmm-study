@@ -10,6 +10,6 @@
 【异步编程，多线程：async-study】、<br/>
 【netty学习：netty】、<br/>
 【阅淘网日志分析工具：log-tool】、<br/>
-【日期处理：date-tackle】、<br/>
+【日期处理, spring定时任务调度分析：date-tackle】、<br/>
 【博客博文系统&&数据库事务：blog】
 

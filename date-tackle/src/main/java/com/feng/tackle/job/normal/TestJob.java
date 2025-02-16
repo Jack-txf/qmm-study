@@ -29,8 +29,9 @@ public class TestJob {
      //@Scheduled(cron = "1-59 * * * * ?")
      //public void hello() {
      //    try {
-     //        log.info("hello");
+     //        log.info("hello---任务开始");
      //        TimeUnit.SECONDS.sleep(5);
+     //        log.info("hello---任务------------结束hello");
      //    } catch (InterruptedException e) {
      //        throw new RuntimeException(e);
      //    }
@@ -39,8 +40,9 @@ public class TestJob {
      //@Scheduled(cron = "1-59 * * * * ?")
      //public void world() {
      //    try {
-     //        log.info("world");
+     //        log.info("world---任务开始");
      //        TimeUnit.SECONDS.sleep(2);
+     //        log.info("world---任务--------------结束world");
      //    } catch (InterruptedException e) {
      //        throw new RuntimeException(e);
      //    }
@@ -100,7 +102,8 @@ public class TestJob {
     // ==================================================================================================================== 案例3 ---- end
 
     // ==================================================================================================================== 案例4 ---- start
-    // 第一个单线程，第二个线程池
+    // 第一个单线程，第二个线程池 任务是由调度线程来调用的，但是调度线程默认是单线程的，故这里hello()是占用了调度线程，然后调度线程启动world()任务就会被推迟了。解决方法是：
+    // 1. @Async   2.配置多线程的任务调度--见config.SchedulerConfig
     @Scheduled(cron = "20/40 * * * * ? ") // 从每分钟的20秒开始，每40秒执行一次，----  xx:xx:20  xx:xx+1:20...
     public void hello() {
         try {
