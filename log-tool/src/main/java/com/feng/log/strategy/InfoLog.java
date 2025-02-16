@@ -27,7 +27,7 @@ public class InfoLog implements LogStrategy{
                     int end = line.lastIndexOf("m");
                     String s = line.substring(start+1, end);
                     long aLong = Long.parseLong(s.trim());
-                    if ( aLong > 1000 ) big.add(aLong);
+                    if ( aLong > 3000 ) big.add(aLong);
                     resList.add(line);
                 }
             }
