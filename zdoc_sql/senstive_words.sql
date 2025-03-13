@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : 本地数据库
  Source Server Type    : MySQL
- Source Server Version : 80023
+ Source Server Version : 80040
  Source Host           : localhost:3306
  Source Schema         : senstive_words
 
  Target Server Type    : MySQL
- Target Server Version : 80023
+ Target Server Version : 80040
  File Encoding         : 65001
 
- Date: 13/11/2024 17:02:06
+ Date: 13/03/2025 17:08:50
 */
 
 SET NAMES utf8mb4;
@@ -26,6 +26,7 @@ CREATE TABLE `chat_msg`  (
   `from_user` int NULL DEFAULT NULL,
   `to_user` int NULL DEFAULT NULL,
   `msg_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `is_read` bit(1) NULL DEFAULT NULL,
   `create_time` datetime NULL DEFAULT NULL,
   `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`msg_id`) USING BTREE
@@ -46,16 +47,12 @@ CREATE TABLE `chat_relation`  (
   `create_time` datetime NULL DEFAULT NULL,
   `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`relation_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of chat_relation
 -- ----------------------------
-INSERT INTO `chat_relation` VALUES (2, 3, 1, '2024-11-12 15:25:02', '2024-11-12 15:25:02');
-INSERT INTO `chat_relation` VALUES (3, 1, 4, '2024-11-12 15:25:02', '2024-11-12 15:25:02');
-INSERT INTO `chat_relation` VALUES (4, 1, 5, '2024-11-12 15:25:02', '2024-11-12 15:25:02');
-INSERT INTO `chat_relation` VALUES (5, 1, 6, '2024-11-12 15:25:02', '2024-11-12 15:25:02');
-INSERT INTO `chat_relation` VALUES (6, 1, 7, '2024-11-12 15:25:02', '2024-11-12 15:25:02');
+INSERT INTO `chat_relation` VALUES (8, 1, 2, '2025-03-13 17:06:27', '2025-03-13 17:06:27');
 
 -- ----------------------------
 -- Table structure for chat_room
@@ -110,7 +107,7 @@ CREATE TABLE `date_tab`  (
   `create_time` datetime NULL DEFAULT NULL,
   `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`t_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of date_tab
@@ -148,13 +145,13 @@ CREATE TABLE `sys_msg_tab`  (
   `create_time` datetime NULL DEFAULT NULL,
   `modify_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`sysmsg_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_msg_tab
 -- ----------------------------
-INSERT INTO `sys_msg_tab` VALUES (1, 1, 0, 2, b'0', 0, '2024-11-12 17:17:05', '2024-11-12 17:17:09');
-INSERT INTO `sys_msg_tab` VALUES (2, 6, 0, 2, b'0', 0, '2024-11-12 17:17:26', NULL);
+INSERT INTO `sys_msg_tab` VALUES (3, 1, 0, 2, b'1', 2, '2025-03-13 17:05:31', '2025-03-13 17:05:31');
+INSERT INTO `sys_msg_tab` VALUES (4, 1, 0, 2, b'1', 1, '2025-03-13 17:06:13', '2025-03-13 17:06:13');
 
 -- ----------------------------
 -- Table structure for words_tab
@@ -164,7 +161,7 @@ CREATE TABLE `words_tab`  (
   `words_id` int NOT NULL AUTO_INCREMENT,
   `words_content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`words_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 49602 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 49603 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of words_tab
