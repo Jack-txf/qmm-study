@@ -2,6 +2,7 @@ package com.feng;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 /**
  * @version 1.0
@@ -9,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Date 2025/2/13 10:20
  * @注释 ${describe}
  */
-@SpringBootApplication
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class Main {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
