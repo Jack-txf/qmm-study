@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF - 8">
+  <meta name="viewport" content="width=device-width, initial-scale = 1.0">
+  <title>Chat - like SSE Example</title>
+  <style>
+    #chat-output {
+      border: 1px solid #ccc;
+      padding: 10px;
+      height: 300px;
+      overflow-y: scroll;
+    }
+  </style>
+</head>
+
+<body>
+<input type="text" id="chat-input" placeholder="Type your message">
+<button onclick="sendChat()">Send</button>
+<div id="chat-output"></div>
+
+<script>
+  function sendChat() {
+    const url = 'http://127.0.0.1:8080/http/chunk/chat';
+    const input = document.getElementById('chat-input').value;
+    const eventSource = new EventSource(url+"?input="+input, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const outputDiv = document.getElementById('chat-output');
+    eventSource.onmessage = function (event) {
+      if (event.data) {
+        outputDiv.innerHTML += event.data + '<br>';
+      }
+    };
+    eventSource.onerror = function () {
+      eventSource.close();
+      console.log('Connection closed or error occurred');
+    };
+  }
+</script>
+</body>
+
+</html>
