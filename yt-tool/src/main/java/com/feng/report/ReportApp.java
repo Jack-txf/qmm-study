@@ -10,8 +10,8 @@ import java.util.Map;
  */
 public class ReportApp {
     public static void main(String[] args) {
-        wxShop();
-        //ytwWx();
+        //wxShop();
+        ytwWx();
     }
 
     private static void zfbShop() {

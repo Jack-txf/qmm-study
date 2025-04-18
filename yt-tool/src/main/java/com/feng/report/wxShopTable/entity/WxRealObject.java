@@ -9,7 +9,7 @@ import java.util.Date;
 public class WxRealObject {
 
     @DateTimeFormat(value = "yyyy/MM/dd HH:mm:ss")
-    @ExcelProperty(value = "交易时间", converter = DateConverter.class)
+    //@ExcelProperty(value = "交易时间", converter = DateConverter.class)
     private Date tradeTime; // 交易时间=============
 
     private String publicAccountId; // 公众账号ID
