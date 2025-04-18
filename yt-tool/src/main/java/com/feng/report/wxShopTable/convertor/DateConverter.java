@@ -33,6 +33,7 @@ public class DateConverter implements Converter<Date> {
      */
     @Override
     public Date convertToJavaData(ReadCellData<?> cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
+        System.out.println(cellData.getStringValue());
         String value = cellData.getStringValue();
         System.out.println(value);
         SimpleDateFormat sdf = new SimpleDateFormat(PATTERN_YYYY_MM_DD);

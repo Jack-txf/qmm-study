@@ -10,9 +10,8 @@ import java.util.Map;
  */
 public class ReportApp {
     public static void main(String[] args) {
-        //wxShop();
-
-        ytwWx();
+        wxShop();
+        //ytwWx();
     }
 
     private static void zfbShop() {
@@ -25,13 +24,15 @@ public class ReportApp {
     private static void wxShop() {
         System.out.println("--------------------------------------------------------------------------------------");
         // 指定文件的位置（相对于此电脑）---------- 微信商家
-        String excelPath = "E:\\a_报表\\20241010对账--十月份\\0923-1006\\wx-shop-0923-1006.xlsx";
+        //String excelPath = "E:\\a_报表\\20241010对账--十月份\\0923-1006\\wx-shop-0923-1006.xlsx";
+        String excelPath = "E:\\a_报表\\2025-四月对账记录\\wx-shop-0321-0417.xlsx";
         Map<String, Object> map = WxExcelUtils.analyseData(excelPath);
         System.out.println("--------------------------------------------------------------------------------------");
     }
     private static void ytwWx() {
         System.out.println("--------------------------------------------------------------------------------------");
-        YtwExcelUtils.analyseYtwExcel("E:\\a_报表\\20241010对账--十月份\\0923-1006\\ytw&dp-wx-0923-1006.xlsx");
+        //YtwExcelUtils.analyseYtwExcel("E:\\a_报表\\20241010对账--十月份\\0923-1006\\ytw&dp-wx-0923-1006.xlsx");
+        YtwExcelUtils.analyseYtwExcel("E:\\a_报表\\2025-四月对账记录\\ytw&dp-wx-0321-0417.xlsx");
         System.out.println("--------------------------------------------------------------------------------------");
     }
     private static void ytwZfb() {

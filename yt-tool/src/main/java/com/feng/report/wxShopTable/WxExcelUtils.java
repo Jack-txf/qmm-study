@@ -46,7 +46,10 @@ public class WxExcelUtils { // 微信商家导出的表，解析工具
             String goodsName = dayData.getGoodsName();
             // 只统计非大客户的!!
             // 三种商品名称需要统计 ：“阅淘网微端订单”， “阅淘网APP订单”，“微信扫码订单”（大客户的不统计）
-            if ( goodsName != null && !goodsName.contains("大客户") && goodsName.contains("阅淘网") || goodsName.contains("微信扫码")) {
+            if ( goodsName != null && !goodsName.contains("大客户") && !goodsName.contains("测试") && !goodsName.contains("3.0")
+                    && !goodsName.contains("活动订单") && !goodsName.contains("微端借阅订单") &&
+                    (goodsName.contains("阅淘网") || goodsName.contains("微信扫码"))
+            ) {
                 //==== 获取年月日
                 Calendar calendar = Calendar.getInstance();
                 Date tradeTime = dayData.getTradeTime();
