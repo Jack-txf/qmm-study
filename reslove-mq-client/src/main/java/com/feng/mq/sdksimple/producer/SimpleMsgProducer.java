@@ -7,13 +7,8 @@ import org.apache.rocketmq.client.apis.ClientConfigurationBuilder;
 import org.apache.rocketmq.client.apis.ClientException;
 import org.apache.rocketmq.client.apis.ClientServiceProvider;
 import org.apache.rocketmq.client.apis.message.Message;
-import org.apache.rocketmq.client.apis.message.MessageBuilder;
 import org.apache.rocketmq.client.apis.producer.Producer;
-import org.apache.rocketmq.client.apis.producer.ProducerBuilder;
 import org.apache.rocketmq.client.apis.producer.SendReceipt;
-import org.apache.rocketmq.client.java.example.ProducerSingleton;
-import org.apache.rocketmq.client.java.impl.producer.ProducerBuilderImpl;
-import org.apache.rocketmq.client.java.message.MessageBuilderImpl;
 
 import java.io.IOException;
 
@@ -34,7 +29,9 @@ public class SimpleMsgProducer {
     // 普通消息发送
     public static void sendSyncMessage() throws ClientException, IOException {
         // 接入点地址，需要设置成Proxy的地址和端口列表，一般是xxx:8080;xxx:8081。
-        String endpoint = "192.168.110.128:8080";
+        // String endpoint = "192.168.32.128:8081";
+        // 寝室测试ip
+        String endpoint = "192.168.32.128:8081";
         // 消息发送的目标Topic名称，需要提前创建。
         String topic = Topic.DEMO_TOPIC;
 
@@ -55,12 +52,12 @@ public class SimpleMsgProducer {
                 // 设置消息Tag，用于消费端根据指定Tag过滤消息。
                 .setTag("messageTag")
                 // 消息体。
-                .setBody("messageBody".getBytes())
+                .setBody("我是消息体".getBytes())
                 .build();
         try {
             // 发送消息，需要关注发送结果，并捕获失败等异常。
             SendReceipt sendReceipt = producer.send(message);
-            System.out.println("Send message successfully, messageId={}: "+  sendReceipt.getMessageId());
+            System.out.println("Send message successfully, messageId=: "+  sendReceipt.getMessageId());
         } catch (ClientException e) {
             System.out.println("Failed to send message" + e);;
         }
