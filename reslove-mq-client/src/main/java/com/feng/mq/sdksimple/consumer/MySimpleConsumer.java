@@ -1,15 +1,14 @@
 package com.feng.mq.sdksimple.consumer;
 
+import com.feng.mq.sdksimple.Topic;
+import org.apache.rocketmq.client.apis.ClientConfiguration;
 import org.apache.rocketmq.client.apis.ClientException;
-import org.apache.rocketmq.client.apis.consumer.ConsumeResult;
-import org.apache.rocketmq.client.apis.consumer.MessageListener;
-import org.apache.rocketmq.client.apis.consumer.SimpleConsumer;
-import org.apache.rocketmq.client.apis.consumer.SimpleConsumerBuilder;
-import org.apache.rocketmq.client.apis.message.MessageView;
-import org.apache.rocketmq.client.java.impl.consumer.SimpleConsumerBuilderImpl;
+import org.apache.rocketmq.client.apis.ClientServiceProvider;
+import org.apache.rocketmq.client.apis.consumer.*;
 
-import java.time.Duration;
-import java.util.List;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.Collections;
 
 /**
  * @Description:
@@ -17,35 +16,58 @@ import java.util.List;
  * @Date: 2025/5/20
  */
 public class MySimpleConsumer {
-    public static void main(String[] args) throws ClientException {
-        SimpleConsumerBuilder b = new SimpleConsumerBuilderImpl();
-        SimpleConsumer simpleConsumer = b.build();
-        //消费示例一：使用PushConsumer消费普通消息，只需要在消费监听器中处理即可。
-        MessageListener messageListener = new MessageListener() {
-            @Override
-            public ConsumeResult consume(MessageView messageView) {
-                System.out.println(messageView);
-                //根据消费结果返回状态。
-                return ConsumeResult.SUCCESS;
-            }
-        };
-        //消费示例二：使用SimpleConsumer消费普通消息，主动获取消息进行消费处理并提交消费结果。
-        List<MessageView> messageViewList = null;
+    public static void main(String[] args) {
         try {
-            messageViewList = simpleConsumer.receive(10, Duration.ofSeconds(30));
-            messageViewList.forEach(messageView -> {
-                System.out.println(messageView);
-                //消费处理完成后，需要主动调用ACK提交消费结果。
-                try {
-                    simpleConsumer.ack(messageView);
-                } catch (ClientException e) {
-                    e.printStackTrace();
-                }
-            });
+            simpleConsumer();
         } catch (ClientException e) {
-            //如果遇到系统流控等原因造成拉取失败，需要重新发起获取消息请求。
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+    }
+    public static void simpleConsumer() throws ClientException {
+        final ClientServiceProvider provider = ClientServiceProvider.loadService();
+        // 接入点地址，需要设置成Proxy的地址和端口列表，一般是xxx:8081。
+        String endpoints = "192.168.32.128:8081";
+        ClientConfiguration clientConfiguration = ClientConfiguration.newBuilder()
+                .setEndpoints(endpoints)
+                .build();
+        // 订阅消息的过滤规则，表示订阅所有Tag的消息。
+        String tag = "*";
+        FilterExpression filterExpression = new FilterExpression(tag, FilterExpressionType.TAG);
+        // 为消费者指定所属的消费者分组，Group需要提前创建。
+        String consumerGroup = "Simple-Consumer-Group";
+        // 指定需要订阅哪个目标Topic，Topic需要提前创建。
+        String topic = Topic.DEMO_TOPIC;
+        // 初始化PushConsumer，需要绑定消费者分组ConsumerGroup、通信参数以及订阅关系。
+        PushConsumer pushConsumer = provider.newPushConsumerBuilder()
+                .setClientConfiguration(clientConfiguration)
+                // 设置消费者分组。
+                .setConsumerGroup(consumerGroup)
+                // 设置预绑定的订阅关系。
+                .setSubscriptionExpressions(Collections.singletonMap(topic, filterExpression))
+                // 设置消费监听器。
+                .setMessageListener(messageView -> {
+                    // 处理消息并返回消费结果。
+                    ByteBuffer body = messageView.getBody();
+                    int remaining = body.remaining();
+                    byte[] content = new byte[remaining];
+                    body.get(content);
+                    String str = new String(content);
 
+                    System.out.println("Consume message successfully, messageId=" + messageView.getMessageId());
+                    System.out.println("Receive message: " + str);
+                    return ConsumeResult.SUCCESS;
+                })
+                .build();
+        try {
+            Thread.sleep(Long.MAX_VALUE);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            // 如果不需要再使用 PushConsumer，可关闭该实例。
+            pushConsumer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
