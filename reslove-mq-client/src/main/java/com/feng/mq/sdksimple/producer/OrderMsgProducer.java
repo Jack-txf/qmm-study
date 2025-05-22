@@ -1,7 +1,6 @@
 package com.feng.mq.sdksimple.producer;
 
 import com.feng.mq.sdksimple.Topic;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.apis.ClientConfiguration;
 import org.apache.rocketmq.client.apis.ClientConfigurationBuilder;
 import org.apache.rocketmq.client.apis.ClientException;
@@ -10,31 +9,27 @@ import org.apache.rocketmq.client.apis.message.Message;
 import org.apache.rocketmq.client.apis.producer.Producer;
 import org.apache.rocketmq.client.apis.producer.SendReceipt;
 
-import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
-
 /**
- * @Description: 普通消息生产者
- * @Author: txf
- * @Date: 2025/5/20
+ * @version 1.0
+ * @Author txf
+ * @Date 2025/5/22 14:32
+ * @注释 顺序消息生产者
  */
-@Slf4j
-public class SimpleMsgProducer {
+public class OrderMsgProducer {
     public static void main(String[] args) {
         try {
-            sendSyncMessage();
-        } catch (ClientException | IOException e) {
+            sendOrderMessage();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    // 普通消息发送
-    public static void sendSyncMessage() throws ClientException, IOException {
+    public static void sendOrderMessage() throws Exception {
         // 接入点地址，需要设置成Proxy的地址和端口列表，一般是xxx:8080;xxx:8081。
-         String endpoint = "192.168.110.128:8081";
+        String endpoint = "192.168.110.128:8081";
         // 寝室测试ip
         //String endpoint = "192.168.32.128:8081";
         // 消息发送的目标Topic名称，需要提前创建。
-        String topic = Topic.DEMO_TOPIC;
+        String topic = Topic.ORDER_TOPIC;
 
         ClientServiceProvider provider = ClientServiceProvider.loadService();
         ClientConfigurationBuilder builder = ClientConfiguration.newBuilder().setEndpoints(endpoint)
@@ -43,12 +38,8 @@ public class SimpleMsgProducer {
         // 初始化Producer时需要设置通信配置以及预绑定的Topic。
         Producer producer = provider.newProducerBuilder()
                 .setTopics(topic)
-                .setMaxAttempts(3)
                 .setClientConfiguration(configuration)
                 .build();
-
-
-
         try {
             // 发送消息，需要关注发送结果，并捕获失败等异常。
             for (int i = 0; i < 10; i++) {
@@ -56,29 +47,20 @@ public class SimpleMsgProducer {
                 Message message = provider.newMessageBuilder()
                         .setTopic(topic)
                         // 设置消息索引键，可根据关键字精确查找某条消息。
-                        .setKeys("messageKey" + i)
+                        .setKeys("order-messageKey" + i)
                         // 设置消息Tag，用于消费端根据指定Tag过滤消息。
-                        .setTag("messageTag" + i )
+                        .setTag("order-messageTag" + i )
+                        //设置顺序消息的排序分组，该分组尽量保持离散，避免热点排序分组。
+                        .setMessageGroup("fifoGroup001")
                         // 消息体。
-                        .setBody(("我是消息体 " + i).getBytes())
+                        .setBody(("我是顺序消息体 " + i).getBytes())
                         .build();
                 SendReceipt sendReceipt = producer.send(message);
                 System.out.println("Send message successfully, messageId=: "+  sendReceipt.getMessageId());
-
-                CompletableFuture<SendReceipt> future = producer.sendAsync(message);
-                future.whenCompleteAsync((sendReceipt1, throwable) -> {
-                    if (throwable != null) {
-                        // 消息发送失败，原因等异常。
-                        System.out.println("Failed to send message");
-                    } else {
-                        // 消息发送成功。
-                        System.out.println("Send message successfully, messageId=: "+  sendReceipt1.getMessageId());
-                    }
-                });
             }
         } catch (ClientException e) {
             System.out.println("Failed to send message" + e);;
         }
-         producer.close();
+        producer.close();
     }
 }

@@ -8,4 +8,6 @@ package com.feng.mq.sdksimple;
  */
 public class Topic {
     public static String DEMO_TOPIC = "demo-topic";
+    public static String DELAY_TOPIC  = "delay-topic";
+    public static String ORDER_TOPIC  = "byorder_topic";
 }

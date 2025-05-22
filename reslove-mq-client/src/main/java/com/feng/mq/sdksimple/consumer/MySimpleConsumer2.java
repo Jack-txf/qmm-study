@@ -4,29 +4,36 @@ import com.feng.mq.sdksimple.Topic;
 import org.apache.rocketmq.client.apis.ClientConfiguration;
 import org.apache.rocketmq.client.apis.ClientException;
 import org.apache.rocketmq.client.apis.ClientServiceProvider;
-import org.apache.rocketmq.client.apis.consumer.*;
+import org.apache.rocketmq.client.apis.consumer.ConsumeResult;
+import org.apache.rocketmq.client.apis.consumer.FilterExpression;
+import org.apache.rocketmq.client.apis.consumer.FilterExpressionType;
+import org.apache.rocketmq.client.apis.consumer.PushConsumer;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
 
 /**
- * @Description:
- * @Author: txf
- * @Date: 2025/5/20
+ * @version 1.0
+ * @Author
+ * @Date 2025/5/22 14:18
+ * @注释
  */
-public class MySimpleConsumer {
+public class MySimpleConsumer2 {
     public static void main(String[] args) {
         try {
-            simpleConsumer();
+            simpleConsumer2();
         } catch (ClientException e) {
             throw new RuntimeException(e);
         }
     }
-    public static void simpleConsumer() throws ClientException {
+
+    public static void simpleConsumer2() throws ClientException {
         final ClientServiceProvider provider = ClientServiceProvider.loadService();
         // 接入点地址，需要设置成Proxy的地址和端口列表，一般是xxx:8081。
-        String endpoints = "192.168.32.128:8081";
+        String endpoints = "192.168.110.128:8081";
+        // 寝室测试ip
+        //String endpoints = "192.168.32.128:8081";
         ClientConfiguration clientConfiguration = ClientConfiguration.newBuilder()
                 .setEndpoints(endpoints)
                 .build();
@@ -53,13 +60,12 @@ public class MySimpleConsumer {
                     body.get(content);
                     String str = new String(content);
 
-                    System.out.println("Consume message successfully, messageId=" + messageView.getMessageId());
-                    System.out.println("Receive message: " + str);
+                    System.out.println("消费者2 【普通消息】 successfully, messageId=" + messageView.getMessageId() + "【】" + str);
                     return ConsumeResult.SUCCESS;
                 })
                 .build();
         try {
-            Thread.sleep(Long.MAX_VALUE);
+            Thread.sleep(30_000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -70,4 +76,5 @@ public class MySimpleConsumer {
             throw new RuntimeException(e);
         }
     }
+
 }
