@@ -1,0 +1,14 @@
+package com.feng.mq.config;
+
+/**
+ * @version 1.0
+ * @Author txf
+ * @Date 2025/5/22 16:29
+ * @注释 主题常量
+ */
+public class TopicConstant {
+    public static final String SP_Normal_Topic = "sp-normal-topic"; // 普通消息
+    public static final String SP_Order_Topic = "sp-order-topic"; // 顺序消息
+    public static final String SP_Delay_Topic = "sp-delay-topic"; // 延时消息
+    public static final String SP_Transaction_Topic = "sp-transaction-topic"; // 事务消息
+}

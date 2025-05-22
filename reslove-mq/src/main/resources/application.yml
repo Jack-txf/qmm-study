@@ -6,8 +6,15 @@ spring:
 
 # rocketmq的配置
 rocketmq:
-  name-server: 127.0.0.1:9876
+  # myself
+#  name-server: 192.168.110.128:9876
+  # company
+  name-server: 192.168.110.128:9876
   producer:
-    group: producer-group01
+    group: sp-producer-group01
+    send-message-timeout: 3000
+    retry-times-when-send-async-failed: 2
+    retry-times-when-send-failed: 2 # 默认重试次数
+    compress-message-body-threshold: 4096 # 消息压缩阀值，当消息体的大小超过该阀值后，进行消息压缩
   consumer:
-    group: consumer-group01
+    group: sp-consumer-group01
