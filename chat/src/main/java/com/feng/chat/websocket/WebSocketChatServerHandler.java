@@ -50,7 +50,12 @@ public class WebSocketChatServerHandler extends TextWebSocketHandler {
     private static final Map<Long, WebSocketSession> onlineSessions = new ConcurrentHashMap<>();
 
     public void userLogout( Long uid ) {
-        onlineSessions.remove(uid);
+        WebSocketSession remove = onlineSessions.remove(uid);
+        try {
+            remove.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         log.info("{} 【退出websocket连接】, 当前在线人数：{}", uid, onlineSessions.size());
     }
 

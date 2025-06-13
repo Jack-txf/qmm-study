@@ -46,15 +46,23 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
 
     @Override
     public R loginByUsernamePassword(LoginUser loginUser) {
-        if ( StpUtil.isLogin() ) throw new MyException("您的账号已在别的设备登录了!");
+        String loginDevice = StpUtil.getLoginDevice();
+        log.info("【用户登录设备】: {}", loginDevice);
 
+        if ( StpUtil.isLogin() ) throw new MyException("您的账号已在别的设备登录了!");
         ChatUser user = chatUserMapper.selectOne(new QueryWrapper<ChatUser>().eq("username", loginUser.getUsername()));
         if ( user == null ) throw new MyException("该账号不存在");
         if ( !user.getPassword().equals(loginUser.getPassword()) ) throw new MyException("账号密码不匹配");
+        // Redis判断是否重复登录
+        if ( redisTemplate.opsForValue().get("userToken:" + user.getUid()) != null ) {
+            throw new MyException("您的账号已在别的设备登录了!");
+        }
+
         // sa-token -- 有效期在配置文件里面看得到
-        StpUtil.login(user.getUid());
+        StpUtil.login(user.getUid(), "PC");
         String tokenValue = StpUtil.getTokenValue();
         try {
+            redisTemplate.opsForValue().set("userToken:" + user.getUid(), tokenValue, 60, TimeUnit.MINUTES);
             redisTemplate.opsForValue().set(tokenValue, "userToken:" + user.getUid(), 60, TimeUnit.MINUTES);
         } catch ( Exception e ) {
             StpUtil.logout();
@@ -84,6 +92,7 @@ public class ChatUserServiceImpl extends ServiceImpl<ChatUserMapper, ChatUser> i
         // redis删除
         String token = StpUtil.getTokenValue();
         redisTemplate.opsForValue().getAndDelete(token);
+        redisTemplate.opsForValue().getAndDelete("userToken:" + UserContextUtil.getUid());
 
         return R.success().setData("msg", "登出成功!");
     }
