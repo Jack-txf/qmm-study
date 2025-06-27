@@ -11,4 +11,7 @@ public class ConsumerGroup {
     public static final String SP_Order_ConsumerGroup = "sp-order-consumer-group"; // 顺序消费组
     public static final String SP_Delay_ConsumerGroup = "sp-delay-consumer-group"; // 延时消费组
     public static final String SP_Transaction_ConsumerGroup = "sp-transaction-consumer-group"; // 事务消费组
+
+    //------------
+    public static final String ORDER_EXPIRE_GROUP = "order-expire-group"; // 订单过期消费组
 }
