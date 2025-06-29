@@ -14,4 +14,5 @@ public class TopicConstant {
 
     //============
     public static final String ORDER_EXPIRE_TOPIC = "order-expire-topic"; // 订单过期的topic
+    public static final String CONSUMER_RELIABILITY_TOPIC = "reliability-order-topic"; // 消费者可靠性topic--普通消息
 }

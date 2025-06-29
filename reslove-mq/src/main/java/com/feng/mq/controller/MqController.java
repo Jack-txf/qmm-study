@@ -20,4 +20,11 @@ public class MqController {
         rocketMQProducer1.sendSyncMessage(msg); // 发送同步消息
         return R.success().setData("msg", "ok");
     }
+
+    // 消费者可靠性测试
+    @PostMapping("/sendMsgReliability")
+    public R sendMsgReliability(@RequestBody String orderId) {
+        rocketMQProducer1.sendReliabilityOrderTest(orderId);
+        return R.success().setData("msg", "ok");
+    }
 }

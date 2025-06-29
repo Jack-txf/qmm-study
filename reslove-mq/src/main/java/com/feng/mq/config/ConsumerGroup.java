@@ -14,4 +14,6 @@ public class ConsumerGroup {
 
     //------------
     public static final String ORDER_EXPIRE_GROUP = "order-expire-group"; // 订单过期消费组
+    public static final String CONSUMER_RELIABILITY = "reliability-order-group"; // 可靠消费组---普通消息
+    public static final String CONSUMER_RELIABILITY_DLQ = "reliability-orderDLQ-group"; // 可靠消费组---死信队列
 }

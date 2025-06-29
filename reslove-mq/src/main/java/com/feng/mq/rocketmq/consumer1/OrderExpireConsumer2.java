@@ -14,24 +14,24 @@ import org.springframework.stereotype.Service;
  * @Date 2025/6/27 15:12
  * @注释 订单过期消费者2
  */
-@Service
-@Slf4j
-@RocketMQMessageListener(
-        topic = TopicConstant.ORDER_EXPIRE_TOPIC,
-        consumerGroup = ConsumerGroup.ORDER_EXPIRE_GROUP,
-        messageModel = MessageModel.CLUSTERING
-)
-public class OrderExpireConsumer2 implements RocketMQListener<String> {
-    public void onMessage(String message) {
-        log.info("【===============================】");
-        log.info("【订单过期消息消费者2】收到消息：{}", message);
-        log.info("【订单过期消息消费者2】处理订单消息开始......修改订单状态..等等操作");
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        log.info("【===============================】");
-        // 处理订单过期消息.....
-    }
-}
+// @Service
+// @Slf4j
+// @RocketMQMessageListener(
+//         topic = TopicConstant.ORDER_EXPIRE_TOPIC,
+//         consumerGroup = ConsumerGroup.ORDER_EXPIRE_GROUP,
+//         messageModel = MessageModel.CLUSTERING
+// )
+// public class OrderExpireConsumer2 implements RocketMQListener<String> {
+//     public void onMessage(String message) {
+//         log.info("【===============================】");
+//         log.info("【订单过期消息消费者2】收到消息：{}", message);
+//         log.info("【订单过期消息消费者2】处理订单消息开始......修改订单状态..等等操作");
+//         try {
+//             Thread.sleep(5000);
+//         } catch (InterruptedException e) {
+//             throw new RuntimeException(e);
+//         }
+//         log.info("【===============================】");
+//         // 处理订单过期消息.....
+//     }
+// }

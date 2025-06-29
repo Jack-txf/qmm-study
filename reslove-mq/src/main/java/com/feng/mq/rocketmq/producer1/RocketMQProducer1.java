@@ -38,4 +38,13 @@ public class RocketMQProducer1 {
         rocketMQTemplate.sendOneWay(TopicConstant.SP_Normal_Topic, MessageBuilder.withPayload(message).build());
         System.out.println("单向消息发送成功");
     }
+
+    // 4.消费者可靠性测试
+    public void sendReliabilityOrderTest( String orderId ) {
+        SendResult sendResult = rocketMQTemplate.syncSend(TopicConstant.CONSUMER_RELIABILITY_TOPIC, MessageBuilder.withPayload(orderId).build());
+        if ( sendResult.getSendStatus() == SendStatus.SEND_OK )
+            System.out.printf("【消费者可靠性测试】同步发送ok结果: %s\n", orderId);
+        else
+            System.out.printf("【消费者可靠性测试】同步发送失败: %s\n", orderId);
+    }
 }

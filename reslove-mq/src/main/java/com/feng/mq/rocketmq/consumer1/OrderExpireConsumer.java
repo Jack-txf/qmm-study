@@ -20,7 +20,8 @@ import org.springframework.stereotype.Service;
         topic = TopicConstant.ORDER_EXPIRE_TOPIC,
         consumerGroup = ConsumerGroup.ORDER_EXPIRE_GROUP,
         messageModel = MessageModel.CLUSTERING
-
+        // consumeThreadMax = 1,
+        // consumeThreadNumber = 1
 )
 public class OrderExpireConsumer implements RocketMQListener<String> {
     public void onMessage(String message) {
