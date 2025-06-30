@@ -7,9 +7,9 @@ spring:
 # rocketmq的配置
 rocketmq:
   # myself
-  name-server: 192.168.32.128:9876
+#  name-server: 192.168.32.128:9876
   # company
-#  name-server: 192.168.110.128:9876
+  name-server: 192.168.110.128:9876
   producer:
     group: sp-producer-group01
     send-message-timeout: 3000
