@@ -13,6 +13,7 @@ public class TopicConstant {
     public static final String SP_Transaction_Topic = "sp-transaction-topic"; // 事务消息
 
     //============
-    public static final String ORDER_EXPIRE_TOPIC = "order-expire-topic"; // 订单过期的topic
+    public static final String ORDER_EXPIRE_TOPIC = "order-expire-topic"; // 订单过期的topic--延迟消息
     public static final String CONSUMER_RELIABILITY_TOPIC = "reliability-order-topic"; // 消费者可靠性topic--普通消息
+    public static final String IDEMPOTENT_TOPIC = "idempotent-topic"; // 消费者幂等topic--普通消息
 }

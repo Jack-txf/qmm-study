@@ -13,7 +13,8 @@ public class ConsumerGroup {
     public static final String SP_Transaction_ConsumerGroup = "sp-transaction-consumer-group"; // 事务消费组
 
     //------------
-    public static final String ORDER_EXPIRE_GROUP = "order-expire-group"; // 订单过期消费组
+    public static final String ORDER_EXPIRE_GROUP = "order-expire-group"; // 订单过期消费组 --- 消费延时消息
     public static final String CONSUMER_RELIABILITY = "reliability-order-group"; // 可靠消费组---普通消息
     public static final String CONSUMER_RELIABILITY_DLQ = "reliability-orderDLQ-group"; // 可靠消费组---死信队列
+    public static final String IDEMPOTENT_GROUP = "idempotent-group"; // 幂等消费组 --- 消费普通消息
 }
