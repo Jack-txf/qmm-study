@@ -1,7 +1,7 @@
-package com.feng.bst;
+package com.feng.tree.bst;
 
-import com.feng.bst.real.BinarySearchTree;
-import com.feng.bst.real.Node;
+import com.feng.tree.bst.real.BinarySearchTree;
+import com.feng.tree.bst.real.Node;
 
 /**
  * @Description: 二叉搜索树

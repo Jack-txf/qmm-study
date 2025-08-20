@@ -1,4 +1,4 @@
-package com.feng.rbt;
+package com.feng.tree.rbt;
 
 /**
  * @Description: 红黑树
