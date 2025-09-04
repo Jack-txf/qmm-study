@@ -25,13 +25,13 @@ spring:
 #        txf:
 #          type: com.alibaba.druid.pool.DruidDataSource
 #          username: root
-#          password: TXFtxf1121512752
+#          password: xxxxx
 #          driver-class-name: com.mysql.cj.jdbc.Driver
 #          url: jdbc:mysql://localhost:3306/txf_club_db?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
   redis:
-    host: 192.168.110.128
+    host: xxxxxx
     port: 6379
-    password: 123456789
+    password: xxxxx
     database: 10
     lettuce:
       pool:
