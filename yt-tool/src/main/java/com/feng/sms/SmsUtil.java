@@ -11,9 +11,9 @@ public class SmsUtil {
     public static void sendMsg( Map<String, Object> paramMap) {
         Config config = new Config()
                 // 您的AccessKey ID
-                .setAccessKeyId("LTAI5tF8wQkgVZ2Ra3itXkVp")
+                .setAccessKeyId("XXXXXXXXXXXXXXX")
                 // 您的AccessKey Secret
-                .setAccessKeySecret("VuWHH8dDiwMV6jAXB6N039UrtmqM1K");
+                .setAccessKeySecret("XXXXXXXXXXXXXXXXXXXXXX");
 
         // 参数=====================
         String ordernum = (String) paramMap.get("orderMasterSn");
@@ -22,15 +22,15 @@ public class SmsUtil {
 
         //获取客服电话
         // String storeId = (String) paramMap.get("storeId");
-        String kfPhone = "023-63731818"; // 阅淘网客服电话
+        String kfPhone = "XXXXXXXXXXXXX"; // 电话
         config.endpoint = "dysmsapi.aliyuncs.com";
 
         try {
             Client client = new com.aliyun.dysmsapi20170525.Client(config);
             SendSmsRequest sendSmsRequest = new SendSmsRequest()
                     .setPhoneNumbers(phone)
-                    .setSignName("阅淘网")
-                    .setTemplateCode("SMS_276320250")
+                    .setSignName("XXXXXXXXXXXX")
+                    .setTemplateCode("XXXXXXXXXX")
                     .setTemplateParam("{\"ordernum\":\"" + ordernum + "\",\"thcode\":\"" + thcode + "\",\"phonenum\":\"" + kfPhone + "\"}");
             // 复制代码运行请自行打印 API 的返回值
             SendSmsResponse sendSmsResponse = client.sendSms(sendSmsRequest);
